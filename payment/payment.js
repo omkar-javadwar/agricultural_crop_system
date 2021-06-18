@@ -1,19 +1,21 @@
 const express = require('express');
-const dbConnection = require('./models/paymentDB')
+const dbConnection = require("./models/paymentDB")
+const paymentRoutes = require('./routes/paymentRoutes')
 
 // Express app
-const app = express();
+const payment = express();
 const port = process.env.PORT || 7000;
 
-app.get('/payment', (req, res) => {
-    console.log('Logged as Payment');
-    res.send("<h2>Welcome to Payment Page...</h2>");
-});
+// middleware 
+payment.use(express.urlencoded({ extended: false }));
+payment.use(express.json());
 
-app.use(function (req, res) {
+payment.use('/payment', paymentRoutes);
+
+payment.use(function (req, res) {
     res.status(404).send({ url: req.originalUrl + ' not found' });
 });
 
-app.listen(port, function () {
+payment.listen(port, function () {
     console.log('Server started on port: ' + port);
 });
