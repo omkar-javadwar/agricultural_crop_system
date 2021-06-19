@@ -1,5 +1,5 @@
 const express = require('express');
-const dbConnection = require("./models/dealerDB")
+const dbConnection = require('./models/dealerDB');
 const dealerRoutes = require('./routes/dealerRoutes');
 
 // Express app
