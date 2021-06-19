@@ -1,19 +1,21 @@
 const express = require('express');
-const dbConnection = require("./models/cropDB")
+const dbConnection = require('./models/cropDB');
+const cropRoutes = require('./routes/cropRoutes');
 
 // Express app
-const app = express();
+const crop = express();
 const port = process.env.PORT || 6000;
 
-app.get('/crop', (req, res) => {
-    console.log('Logged as Crop');
-    res.send("<h2>Welcome to Crop Page...</h2>");
-});
+// middleware 
+crop.use(express.urlencoded({ extended: false }));
+crop.use(express.json());
 
-app.use(function (req, res) {
+crop.use('/crop', cropRoutes);
+
+crop.use(function (req, res) {
     res.status(404).send({ url: req.originalUrl + ' not found' });
 });
 
-app.listen(port, function () {
+crop.listen(port, function () {
     console.log('Server started on port: ' + port);
 });
