@@ -5,7 +5,8 @@
   "main": "dealer.js",
   "dependencies": {
     "express": "^4.17.1",
-    "mongoose": "^5.12.14"
+    "mongoose": "^5.12.14",
+    "mongoose-validator": "^2.1.0"
   },
   "devDependencies": {},
   "scripts": {

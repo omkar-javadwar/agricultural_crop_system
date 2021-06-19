@@ -1,19 +1,21 @@
 const express = require('express');
 const dbConnection = require("./models/dealerDB")
+const dealerRoutes = require('./routes/dealerRoutes');
 
 // Express app
-const app = express();
+const dealer = express();
 const port = process.env.PORT || 4000;
 
-app.get('/dealer', (req, res) => {
-    console.log('Logged as Dealer');
-    res.send("<h2>Welcome to Dealer Page...</h2>");
-});
+// middleware 
+dealer.use(express.urlencoded({ extended: false }));
+dealer.use(express.json());
 
-app.use(function (req, res) {
+dealer.use('/dealer', dealerRoutes);
+
+dealer.use(function (req, res) {
     res.status(404).send({ url: req.originalUrl + ' not found' });
 });
 
-app.listen(port, function () {
+dealer.listen(port, function () {
     console.log('Server started on port: ' + port);
 });
