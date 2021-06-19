@@ -1,19 +1,23 @@
 const express = require('express');
-const dbConnection = require("./models/farmerDB")
+const dbConnection = require('./models/farmerDB');
+const farmerRoutes = require('./routes/farmerRoutes');
+const bankDetailsRoutes = require('./routes/bankDetailsRoutes');
 
 // Express app
-const app = express();
+const farmer = express();
 const port = process.env.PORT || 5000;
 
-app.get('/farmer', (req, res) => {
-    console.log("Logged as Farmer")
-    res.send("<h2>Welcome to Farmer Page...</h2>");
-});
+// middleware 
+farmer.use(express.urlencoded({ extended: false }));
+farmer.use(express.json());
 
-app.use(function (req, res) {
+farmer.use('/farmer', farmerRoutes);
+farmer.use('/bank_details', bankDetailsRoutes);
+
+farmer.use(function (req, res) {
     res.status(404).send({ url: req.originalUrl + ' not found' });
 });
 
-app.listen(port, function () {
+farmer.listen(port, function () {
     console.log('Server started on port: ' + port);
 });
