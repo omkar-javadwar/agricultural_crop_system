@@ -7,7 +7,6 @@ exports.viewAdmin = async (req, res) => {
             res.send(`Username is ${data.username} and Password is ${data.password}`);
         })
         .catch((err) => {
-            //json web token
             res.send(err.message);
         });
 };
