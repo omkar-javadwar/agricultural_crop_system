@@ -8,7 +8,7 @@ exports.getBankDetails = async (req, res) => {
             res.send(data);
         })
         .catch((err) => {
-            console.log(err);
+            res.send(err.message);
         });
 };
 
@@ -27,6 +27,6 @@ exports.updateBankDetails = async (req, res) => {
             res.send('bank details updated');
         })
         .catch((err) => {
-            console.log(err);
+            res.send(err.message);
         });
 };

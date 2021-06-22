@@ -9,6 +9,7 @@ const farmerSchema = mongoose.Schema({
     },
     email: {
         type: String,
+        unique: true,
         lowercase: true,
         trim: true,
         validate: [
@@ -74,7 +75,9 @@ const farmerSchema = mongoose.Schema({
             }
         },
         UPI: {
-            upi_id: [String]
+            upi_id: {
+                type: String
+            }
         }
     }
 });

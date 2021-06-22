@@ -6,15 +6,15 @@ exports.viewFarmerById = async (req, res) => {
             res.send(data);
         })
         .catch((err) => {
-            console.log(err);
+            res.send(err.message);
         });
 };
 
 exports.addFarmer = async (req, res) => {
-    Farmer.create(req.body).then(() => {
-        res.send(req.body);
+    Farmer.create(req.body).then((data) => {
+        res.send(data);
     }).catch((err) => {
-        res.send(err);
+        res.send(err.message);
     });
 };
 
@@ -24,7 +24,7 @@ exports.updateFarmer = async (req, res) => {
             res.send(data);
         })
         .catch((err) => {
-            console.log(err);
+            res.send(err.message);
         });
 };
 
@@ -34,6 +34,6 @@ exports.removeFarmer = async (req, res) => {
             res.send(data);
         })
         .catch((err) => {
-            console.log(err);
+            res.send(err.message);
         });
 };
