@@ -6,6 +6,7 @@ const adminSchema = new mongoose.Schema({
     username: {
         type: String,
         unique: true,
+        minlength: 5,
         trim: true,
         required: [true, 'username is required']
     },

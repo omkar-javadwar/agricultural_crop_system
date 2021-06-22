@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Admin = require('../models/adminSchema');
+const bcrypt = require('bcryptjs');
 
 exports.viewAdmin = async (req, res) => {
     Admin.findById(req.params.id)
@@ -7,8 +8,7 @@ exports.viewAdmin = async (req, res) => {
             res.send(`Username is ${data.username} and Password is ${data.password}`);
         })
         .catch((err) => {
-            //json web token
-            res.send(err.message);
+            res.status(400).send(err.message);
         });
 };
 
@@ -33,23 +33,18 @@ exports.addAdmin = async (req, res) => {
     Admin.create(admin).then((data) => {
         res.send(`New admin is created with username ${data.username} and password ${data.password}`);
     }).catch((err) => {
-        res.send(err.message);
+        res.status(400).send(err.message);
     });
 };
 
 exports.updateAdmin = async (req, res) => {
-    Admin.updateOne({ _id: mongoose.Types.ObjectId(req.params.id) },
-        [{
-            $set:
-            {
-                'password': req.body.password,
-            }
-        }])
-        .then(() => {
-            res.send(`Updated the password as follows: ${req.body.password}`);
+    req.body.password = await bcrypt.hash(req.body.password, 10);
+    Admin.findByIdAndUpdate(req.params.id, req.body.password)
+        .then((data) => {
+            res.send(`Updated the password as follows: ${data.password}`);
         })
         .catch((err) => {
-            res.send(err.message);
+            res.status(400).send(err.message);
         });
 };
 
@@ -59,6 +54,6 @@ exports.removeAdmin = async (req, res) => {
             res.send(`Username ${data.username} has lost the rights!`);
         })
         .catch((err) => {
-            res.send(err.message);
+            res.status(400).send(err.message);
         });
 };
