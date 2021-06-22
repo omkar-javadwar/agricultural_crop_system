@@ -9,6 +9,7 @@ const dealerSchema = mongoose.Schema({
     },
     email: {
         type: String,
+        unique: true,
         lowercase: true,
         trim: true,
         validate: [
