@@ -1,4 +1,5 @@
 const Dealer = require('../models/dealerSchema');
+const bcrypt = require('bcryptjs');
 
 exports.viewDealerById = async (req, res) => {
     Dealer.findById(req.params.id)
@@ -16,7 +17,7 @@ exports.viewDealerById = async (req, res) => {
                 }`);
         })
         .catch((err) => {
-            res.send(err.message);
+            res.status(400).send(err.message);
         });
 };
 
@@ -34,11 +35,12 @@ exports.addDealer = async (req, res) => {
                     zip: ${data.address.zip}
                 }`);
     }).catch((err) => {
-        res.send(err.message);
+        res.status(400).send(err.message);
     });
 };
 
 exports.updateDealer = async (req, res) => {
+    req.body.password = await bcrypt.hash(req.body.password, 10);
     Dealer.findByIdAndUpdate(req.params.id, req.body)
         .then((data) => {
             res.send(`Updated dealer details =>
@@ -54,7 +56,7 @@ exports.updateDealer = async (req, res) => {
                 }`);
         })
         .catch((err) => {
-            res.send(err.message);
+            res.status(400).send(err.message);
         });
 };
 
@@ -74,6 +76,6 @@ exports.removeDealer = async (req, res) => {
                 }`);
         })
         .catch((err) => {
-            res.send(err.message);
+            res.status(400).send(err.message);
         });
 };

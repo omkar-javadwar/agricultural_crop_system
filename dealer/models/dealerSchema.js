@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const validator = require('mongoose-validator')
+const bcrypt = require('bcryptjs');
 
 const dealerSchema = mongoose.Schema({
     name: {
@@ -57,6 +58,15 @@ const dealerSchema = mongoose.Schema({
             require: [true, 'zip code is required']
         }
     }
+});
+
+// hashing password
+dealerSchema.pre('save', async function (next) {
+    // only hash the password if it has been modified (or is new)
+    if (this.isModified('password')) {
+        this.password = await bcrypt.hash(this.password, 10);
+    }
+    next();
 });
 
 const Dealer = mongoose.model('dealer', dealerSchema);
