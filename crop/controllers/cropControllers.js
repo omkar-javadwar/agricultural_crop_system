@@ -7,7 +7,7 @@ exports.viewCrops = async (req, res) => {
              ${data}`);
         })
         .catch((err) => {
-            res.send(err.message);
+            res.status(400).send(err.message);
         });
 };
 
@@ -22,7 +22,7 @@ exports.viewCropById = async (req, res) => {
             crop_description: ${data.crop_description}`);
         })
         .catch((err) => {
-            res.send(err.message);
+            res.status(400).send(err.message);
         });
 };
 
@@ -36,7 +36,7 @@ exports.addCrop = async (req, res) => {
             crop_price: ${data.crop_price}, 
             crop_description: ${data.crop_description}`);
     }).catch((err) => {
-        res.send(err.message);
+        res.status(400).send(err.message);
     });
 };
 
@@ -51,7 +51,7 @@ exports.updateCrop = async (req, res) => {
             crop_description: ${data.crop_description}`);
         })
         .catch((err) => {
-            res.send(err.message);
+            res.status(400).send(err.message);
         });
 };
 
@@ -66,7 +66,7 @@ exports.removeCropById = async (req, res) => {
             crop_description: ${data.crop_description}`);
         })
         .catch((err) => {
-            res.send(err.message);
+            res.status(400).send(err.message);
         });
 };
 
@@ -77,6 +77,6 @@ exports.removeCrops = async (req, res) => {
             ${data}`);
         })
         .catch((err) => {
-            res.send(err.message);
+            res.status(400).send(err.message);
         })
 };

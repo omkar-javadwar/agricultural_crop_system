@@ -40,6 +40,6 @@ crop.use(function (req, res) {
     res.status(404).send({ url: req.originalUrl + ' not found' });
 });
 
-crop.listen(port, function () {
+module.exports = crop.listen(port, function () {
     console.log('Server started on port: ' + port);
 });
