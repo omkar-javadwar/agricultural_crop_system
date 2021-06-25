@@ -1,5 +1,6 @@
 const express = require('express');
 const dealerControllers = require('../controllers/dealerControllers');
+const authentication = require('../../middleware/authentication');
 
 const router = express.Router();
 
@@ -19,25 +20,68 @@ const router = express.Router();
  *         description: Returns the requested Dealer
  */
 
-router.get('/:id', dealerControllers.viewDealerById);
+router.get('/:id', authentication, dealerControllers.viewDealer);
 
 /**
  * @swagger
- * /dealer:
+ * /dealer/signup:
  *   post:
- *     summary: Create new dealer
+ *     summary: Dealer signup
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               contact:
+ *                 type: string
+ *               address:
+ *                 type: object
+ *                 properties:
+ *                   street:
+ *                     type: string
+ *                   city:
+ *                     type: string
+ *                   state:
+ *                     type: string
+ *                   zip:
+ *                     type: number
  *     responses:
  *       200:
  *         description: Returns the requested dealer
  */
 
-router.post('/', dealerControllers.addDealer);
+router.post('/signup', dealerControllers.registerDealer);
+
+/**
+ * @swagger
+ * /dealer/signin:
+ *   post:
+ *     summary: Dealer login
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Returns the requested dealer
+ */
+
+router.post('/signin', authentication, dealerControllers.loginDealer);
 
 /**
  * @swagger
@@ -57,12 +101,32 @@ router.post('/', dealerControllers.addDealer);
  *         application/json:
  *           schema:
  *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               contact:
+ *                 type: string
+ *               address:
+ *                 type: object
+ *                 properties:
+ *                   street:
+ *                     type: string
+ *                   city:
+ *                     type: string
+ *                   state:
+ *                     type: string
+ *                   zip:
+ *                     type: number
  *     responses:
  *       200:
  *         description: Returns the requested dealer
  */
 
-router.put('/:id', dealerControllers.updateDealer);
+router.put('/:id', authentication, dealerControllers.updateDealer);
 
 /**
  * @swagger
@@ -80,6 +144,6 @@ router.put('/:id', dealerControllers.updateDealer);
  *         description: Returns the requested dealer
  */
 
-router.delete('/:id', dealerControllers.removeDealer);
+router.delete('/:id', authentication, dealerControllers.removeDealer);
 
 module.exports = router;

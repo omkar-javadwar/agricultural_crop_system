@@ -1,7 +1,7 @@
 const Dealer = require('../models/dealerSchema');
 const bcrypt = require('bcryptjs');
 
-exports.viewDealerById = async (req, res) => {
+viewDealer = async (req, res) => {
     Dealer.findById(req.params.id)
         .then((data) => {
             res.send(`Dealer details =>
@@ -21,8 +21,19 @@ exports.viewDealerById = async (req, res) => {
         });
 };
 
-exports.addDealer = async (req, res) => {
-    Dealer.create(req.body).then((data) => {
+registerDealer = async (req, res) => {
+
+    const dealer = new Dealer(req.body);
+
+    //json web token
+    const token = await dealer.generateAuthToken();
+    res.cookie('jwt', token, {
+        expires: new Date(Date.now() + 24 * 60 * 60),
+        httpOnly: true
+    });
+
+    dealer.save().then((data) => {
+        // Dealer.create(req.body).then((data) => {
         res.send(`New dealer details =>
                 name: ${data.name},
                 email: ${data.email},
@@ -39,7 +50,25 @@ exports.addDealer = async (req, res) => {
     });
 };
 
-exports.updateDealer = async (req, res) => {
+loginDealer = async (req, res) => {
+    try {
+        const email = req.body.email;
+        const password = req.body.password;
+
+        const user = await Dealer.findOne({ email: email });
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (isMatch) {
+            res.status(201).send('login successful');
+        } else {
+            res.send("invalid password");
+        }
+    } catch (err) {
+        res.status(400).send("invalid user");
+    }
+}
+
+updateDealer = async (req, res) => {
     req.body.password = await bcrypt.hash(req.body.password, 10);
     Dealer.findByIdAndUpdate(req.params.id, req.body)
         .then((data) => {
@@ -60,7 +89,7 @@ exports.updateDealer = async (req, res) => {
         });
 };
 
-exports.removeDealer = async (req, res) => {
+removeDealer = async (req, res) => {
     Dealer.findByIdAndDelete(req.params.id)
         .then((data) => {
             res.send(`Removed dealer details =>
@@ -79,3 +108,11 @@ exports.removeDealer = async (req, res) => {
             res.status(400).send(err.message);
         });
 };
+
+module.exports = {
+    viewDealer,
+    registerDealer,
+    loginDealer,
+    updateDealer,
+    removeDealer
+}

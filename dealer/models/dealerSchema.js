@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const validator = require('mongoose-validator')
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const dealerSchema = mongoose.Schema({
     name: {
@@ -59,6 +60,16 @@ const dealerSchema = mongoose.Schema({
         }
     }
 });
+
+// generating token
+dealerSchema.methods.generateAuthToken = async () => {
+    try {
+        const token = jwt.sign({ email: this.email }, "mysecretkey");
+        return token;
+    } catch (err) {
+        console.log(err);
+    }
+}
 
 // hashing password
 dealerSchema.pre('save', async function (next) {

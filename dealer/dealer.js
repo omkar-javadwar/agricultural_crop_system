@@ -3,6 +3,7 @@ const dbConnection = require('./models/dealerDB');
 const dealerRoutes = require('./routes/dealerRoutes');
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+const cookieParser = require('cookie-parser');
 
 // Express app
 const dealer = express();
@@ -11,6 +12,7 @@ const port = process.env.PORT || 4000;
 // middleware 
 dealer.use(express.urlencoded({ extended: false }));
 dealer.use(express.json());
+dealer.use(cookieParser());
 
 dealer.use('/dealer', dealerRoutes);
 
