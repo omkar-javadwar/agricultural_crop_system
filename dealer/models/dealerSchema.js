@@ -25,7 +25,7 @@ const dealerSchema = mongoose.Schema({
         type: String,
         minlength: 8,
         maxlength: 16,
-        required: true
+        required: [true, 'password is required']
     },
     contact: {
         type: String,
