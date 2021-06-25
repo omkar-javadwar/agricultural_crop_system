@@ -15,7 +15,6 @@ exports.viewAdmin = async (req, res) => {
 exports.registerAdmin = async (req, res) => {
     const user = new Admin(req.body);
     const token = await user.generateAuthToken();
-    console.log(token);
 
     res.cookie('jwt', token, {
         expires: new Date(Date.now() + 24 * 60 * 60),
@@ -46,10 +45,10 @@ exports.loginAdmin = async (req, res) => {
         if (isMatch) {
             res.status(201).send('login successful');
         } else {
-            res.send("invalid password");
+            res.send('invalid password');
         }
     } catch (err) {
-        res.status(400).send("invalid user");
+        res.status(400).send('invalid user');
     }
 };
 

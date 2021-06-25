@@ -3,7 +3,7 @@ const dbConnection = require('./models/adminDB');
 const adminRoutes = require('./routes/adminRoutes');
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
 
 // Express app
 const admin = express();
