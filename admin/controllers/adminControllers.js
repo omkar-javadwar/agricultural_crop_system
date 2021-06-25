@@ -12,13 +12,13 @@ exports.viewAdmin = async (req, res) => {
         });
 };
 
-exports.addAdmin = async (req, res) => {
+exports.registerAdmin = async (req, res) => {
     const user = new Admin(req.body);
     const token = await user.generateAuthToken();
     console.log(token);
 
     res.cookie('jwt', token, {
-        expires: new Date(Date.now() + 15000),
+        expires: new Date(Date.now() + 24 * 60 * 60),
         httpOnly: true
     });
 
@@ -27,11 +27,30 @@ exports.addAdmin = async (req, res) => {
         password: req.body.password,
     });
 
-    Admin.create(admin).then((data) => {
+    admin.save().then((data) => {
+        // Admin.create(admin).then((data) => {
         res.send(`New admin is created with username ${data.username} and password ${data.password}`);
     }).catch((err) => {
         res.status(400).send(err.message);
     });
+};
+
+exports.loginAdmin = async (req, res) => {
+    try {
+        const username = req.body.username;
+        const password = req.body.password;
+
+        const user = await Admin.findOne({ username: username });
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (isMatch) {
+            res.status(201).send('login successful');
+        } else {
+            res.send("invalid password");
+        }
+    } catch (err) {
+        res.status(400).send("invalid user");
+    }
 };
 
 exports.updateAdmin = async (req, res) => {

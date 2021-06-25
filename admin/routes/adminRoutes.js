@@ -1,5 +1,7 @@
 const express = require('express');
 const adminControllers = require('../controllers/adminControllers');
+const authentication = require('../../middleware/authentication');
+
 const router = express.Router();
 
 /**
@@ -19,13 +21,13 @@ const router = express.Router();
  *         description: Returns the requested admin
  */
 
-router.get('/:id', adminControllers.viewAdmin);
+router.get('/:id', authentication, adminControllers.viewAdmin);
 
 /**
  * @swagger
- * /admin:
+ * /admin/signup:
  *   post:
- *     summary: Create new admin
+ *     summary: Admin registration
  *     requestBody:
  *       required: true
  *       content:
@@ -44,7 +46,32 @@ router.get('/:id', adminControllers.viewAdmin);
  *         description: Returns the requested admin
  */
 
-router.post('/', adminControllers.addAdmin);
+router.post('/signup', adminControllers.registerAdmin);
+
+/**
+* @swagger
+* /admin/signin:
+*   post:
+*     summary: Admin login
+*     requestBody:
+*       required: true
+*       content:
+*         application/json:
+*           schema:
+*             type: object
+*             properties:
+*               username:
+*                 type: string
+*                 description: username
+*               password:
+*                 type: string
+*                 description: password                         
+*     responses:
+*       200:
+*         description: Returns the requested admin
+*/
+
+router.post('/signin', authentication, adminControllers.loginAdmin);
 
 /**
  * @swagger
@@ -76,7 +103,7 @@ router.post('/', adminControllers.addAdmin);
  *                  description: Returns the requested admin
  */
 
-router.put('/:id', adminControllers.updateAdmin);
+router.put('/:id', authentication, adminControllers.updateAdmin);
 
 /**
  * @swagger
@@ -94,6 +121,6 @@ router.put('/:id', adminControllers.updateAdmin);
  *       200:
  *         description: Returns the requested admin
  */
-router.delete('/:id', adminControllers.removeAdmin);
+router.delete('/:id', authentication, adminControllers.removeAdmin);
 
 module.exports = router;

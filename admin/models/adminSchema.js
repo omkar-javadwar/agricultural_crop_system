@@ -21,10 +21,7 @@ const adminSchema = new mongoose.Schema({
 //generating token
 adminSchema.methods.generateAuthToken = async function () {
     try {
-        // const token = jwt.sign({ email: this.email }, process.env.SECRET_KEY);
-        const token = jwt.sign({ username: this.username }, "qwertyuiop1236547890");
-        // this.tokens = this.tokens.concat({token});
-        // await this.save();
+        const token = jwt.sign({ username: this.username }, "mysecretkey");
         return token;
     } catch (err) {
         console.log(err);

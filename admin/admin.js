@@ -3,6 +3,7 @@ const dbConnection = require('./models/adminDB');
 const adminRoutes = require('./routes/adminRoutes');
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+const cookieParser = require('cookie-parser')
 
 // Express app
 const admin = express();
@@ -11,6 +12,7 @@ const port = process.env.PORT || 3000;
 // middleware 
 admin.use(express.urlencoded({ extended: false }));
 admin.use(express.json());
+admin.use(cookieParser());
 
 const options = {
     definition: {
