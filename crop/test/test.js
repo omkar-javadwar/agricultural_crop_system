@@ -9,10 +9,11 @@ describe('POST /crop', () => {
     it('should post data into database', (done) => {
         crop = {
             "crop_name": "carrot",
+            "user_id": "60d15e148a096e443c02520e",
             "crop_tag": "vegetabels",
             "crop_quantity": 100,
             "crop_price": 50,
-            "crop_description": "fresh red color carrot"
+            "crop_description": "fresh carrots"
         }
         chai.request(app)
             .post('/crop')
@@ -25,11 +26,12 @@ describe('POST /crop', () => {
     })
 });
 
-describe('GET /crop/:id', () => {
+describe('GET /crop', () => {
     it('should get crop by id', (done) => {
-        id = '60d22124b2d8672c78112052';
+        cid = '60d78856b048274994cc19c8';
+        uid = '60d15e148a096e443c02520e';
         chai.request(app)
-            .get('/crop/' + id)
+            .get(`/crop?cid=${cid}&uid=${uid}`)
             .end((err, response) => {
                 response.should.have.status(200);
                 response.body.should.be.a('object');
@@ -40,8 +42,9 @@ describe('GET /crop/:id', () => {
 
 describe('GET /crop', () => {
     it('should get all crops', (done) => {
+        uid = '60d15e148a096e443c02520e';
         chai.request(app)
-            .get('/crop')
+            .get(`/crop?uid=${uid}`)
             .end((err, res) => {
                 res.should.have.status(200);
                 res.body.should.be.a('object');
@@ -50,18 +53,16 @@ describe('GET /crop', () => {
     })
 })
 
-describe('PUT /crop/:id', () => {
+describe('PUT /crop/:cid', () => {
     it('should update crop data', (done) => {
         crop = {
-            "crop_name": "mirchi",
-                "crop_tag": "vegetabels",
-                "crop_quantity": 150,
-                "crop_price": 25,
-                "crop_description": "fresh red color mirch"
+            "crop_quantity": 150,
+            "crop_price": 25,
+            "crop_description": "fresh red color mirch"
         }
-        id = '60d22124b2d8672c78112052';
+        cid = '60d78856b048274994cc19c8';
         chai.request(app)
-            .put('/crop/' + id)
+            .put('/crop/' + cid)
             .send(crop)
             .end((err, response) => {
                 response.should.have.status(200);
@@ -71,11 +72,11 @@ describe('PUT /crop/:id', () => {
     })
 })
 
-describe('DELETE /crop/:id', () => {
+describe('DELETE /crop/:cid', () => {
     it('should delete crop by id', (done) => {
-        id = '60d21b40db2bdf3a18a647e5';
+        cid = '60d78856b048274994cc19c8';
         chai.request(app)
-            .delete('/crop/' + id)
+            .delete('/crop/' + cid)
             .end((err, response) => {
                 response.should.have.status(200);
                 done();
@@ -85,8 +86,9 @@ describe('DELETE /crop/:id', () => {
 
 describe('DELETE /crop', () => {
     it('should delete all crops', (done) => {
+        uid = '60d15e148a096e443c02520e'
         chai.request(app)
-            .delete('/crop')
+            .delete(`/crop?uid=${uid}`)
             .end((err, res) => {
                 res.should.have.status(200);
                 res.body.should.be.a('object');
