@@ -4,12 +4,11 @@ const cropSchema = new mongoose.Schema({
     crop_name: {
         type: String,
         trim: true,
-        required: [true, "name is required"]
+        required: [true, 'name is required']
     },
-    crop_image: {
-        data: Buffer,
-        contentType: String,
-        required: false
+    user_id: {
+        type: mongoose.SchemaTypes.ObjectId,
+        required: [true, 'user id required']
     },
     crop_tag: {
         type: String,
@@ -29,9 +28,9 @@ const cropSchema = new mongoose.Schema({
         trim: true,
         minlength: 10,
         maxlength: 50,
-        require: false
-    }
-});
+        require: false,
+    },
+}, { timestamps: true });
 
 const Crop = mongoose.model("crop", cropSchema);
 module.exports = Crop;

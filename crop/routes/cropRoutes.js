@@ -7,81 +7,94 @@ const router = express.Router();
  * @swagger
  * /crop:
  *   get:
- *     description: Get all crops
- *     responses:
- *       200:
- *         description: Returns the requested crop
- */
-
-router.get('/', cropControllers.viewCrops);
-
-/**
- * @swagger
- * /crop/{id}:
- *   get:
- *     summary: View crop by ID
+ *     description: Get crop details
  *     parameters:
- *      - in: path
- *        name: id
- *        required: true
- *        type: string
- *        description: Crop ID
+ *       - in: query
+ *         name: cid
+ *         description: Crop ID
+ *       - in: query
+ *         name: uid
+ *         required: true
+ *         description: User ID
+ *     schema:
+ *       type: object
  *     responses:
  *       200:
  *         description: Returns the requested crop
  */
 
-router.get('/:id', cropControllers.viewCropById);
+router.get('/', cropControllers.viewCrop);
 
 /**
  * @swagger
  * /crop:
  *   post:
- *     summary: Create new crop
+ *     description: Create new crop
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
+ *             properties:
+ *               crop_name:
+ *                 type: string
+ *               user_id:
+ *                 type: string
+ *               crop_tag:
+ *                 type: string
+ *               crop_quantity:
+ *                 type: number
+ *               crop_price:
+ *                 type: number
+ *               crop_description:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Returns the requested crop
  */
+
 router.post('/', cropControllers.addCrop);
 
 /**
  * @swagger
- * /crop/{id}:
+ * /crop/{cid}:
  *   put:
- *     summary: Update crop details
+ *     description: Update crop
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: cid
  *         schema:
  *           type: string
  *           required: true
- *           description: Crop ID
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
+ *             properties:
+ *               crop_quantity:
+ *                 type: number
+ *               crop_price:
+ *                 type: number
+ *               crop_description:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Returns the requested crop
  */
-router.put('/:id', cropControllers.updateCrop);
+
+router.put('/:cid', cropControllers.updateCrop);
 
 /**
  * @swagger
- * /crop/{id}:
+ * /crop/{cid}:
  *   delete:
- *     summary: Delete crop by Id
+ *     description: Delete crop by Id
  *     parameters:
  *      - in: path
- *        name: id
+ *        name: cid
  *        required: true
  *        type: string
  *        description: Crop ID
@@ -90,13 +103,17 @@ router.put('/:id', cropControllers.updateCrop);
  *         description: Returns the requested crop
  */
 
-router.delete('/:id', cropControllers.removeCropById);
+router.delete('/:cid', cropControllers.removeCropById);
 
 /**
  * @swagger
  * /crop:
  *   delete:
  *     description: Delete all crops
+ *     parameters:
+ *       - in: query
+ *         name: uid
+ *         required: true
  *     responses:
  *       200:
  *         description: Returns the requested crop

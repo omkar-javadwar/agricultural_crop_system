@@ -1,82 +1,102 @@
 const Crop = require('../models/cropSchema');
 
-exports.viewCrops = async (req, res) => {
-    await Crop.find()
-        .then((data) => {
-            res.send(`all crop details =>
-             ${data}`);
-        })
-        .catch((err) => {
-            res.status(400).send(err.message);
-        });
-};
+// GET all crops for a user
+// GET single crop for a user
+/**
+ * A single api can perform multiple operations based on the query params.
+ * Also to improve this logic, we can create different util files or modules to handle the separate logic 
+ * based on these query params.
+ * As this is a straightforward simple condition, I have added them using if else condition here only.
+ */
 
-exports.viewCropById = async (req, res) => {
-    await Crop.findById(req.params.id)
-        .then((data) => {
-            res.send(`crop details => 
-            crop_name: ${data.crop_name}, 
-            crop_tag: ${data.crop_tag},
-            crop_quantity: ${data.crop_quantity}, 
-            crop_price: ${data.crop_price}, 
-            crop_description: ${data.crop_description}`);
-        })
-        .catch((err) => {
-            res.status(400).send(err.message);
-        });
-};
+viewCrop = async (req, res) => {
 
-exports.addCrop = async (req, res) => {
-    var crop = new Crop(req.body);
-    await crop.save().then((data) => {
-        res.send(`new crop details => 
-            crop_name: ${data.crop_name}, 
-            crop_tag: ${data.crop_tag},
-            crop_quantity: ${data.crop_quantity}, 
-            crop_price: ${data.crop_price}, 
-            crop_description: ${data.crop_description}`);
+    if (!req.query.cid && req.query.uid) {
+        Crop.find({ user_id: req.query.uid }).then(result => {
+            if (result) {
+                res.send(`all crop details =>
+                ${result}`);
+            } else {
+                res.status(400).send(err.message);
+            }
+        })
+    } else if (req.query.cid && req.query.uid) {
+        Crop.find({ _id: req.query.cid, user_id: req.query.uid }).then((result) => {
+            if (result) {
+                res.send(`crop details =>
+                ${result}`);
+            } else {
+                res.status(400).send(err.message);
+            }
+        })
+    }
+}
+
+// Create an crop for a user
+addCrop = async (req, res) => {
+    const newCrop = {
+        "crop_name": req.body.crop_name,
+        "user_id": req.body.user_id,
+        "crop_tag": req.body.crop_tag,
+        "crop_quantity": req.body.crop_quantity,
+        "crop_price": req.body.crop_price,
+        "crop_description": req.body.crop_description
+    }
+
+    // Create new crop instance..
+    const crop = new Crop(newCrop)
+    crop.save().then((result) => {
+        res.send(`new crop details =>
+                ${result}`);
     }).catch((err) => {
         res.status(400).send(err.message);
-    });
-};
+    })
+}
 
-exports.updateCrop = async (req, res) => {
-    await Crop.findByIdAndUpdate(req.params.id, req.body)
-        .then((data) => {
-            res.send(`updated crop details => 
-            crop_name: ${data.crop_name}, 
-            crop_tag: ${data.crop_tag},
-            crop_quantity: ${data.crop_quantity}, 
-            crop_price: ${data.crop_price}, 
-            crop_description: ${data.crop_description}`);
+// Update a single crop
+updateCrop = async (req, res) => {
+    const crop_details = {
+        "crop_quantity": req.body.crop_quantity,
+        "crop_price": req.body.crop_price,
+        "crop_description": req.body.crop_description
+    }
+
+    Crop.findByIdAndUpdate(req.params.cid, crop_details)
+        .then((result) => {
+            res.send(`updated all crop details =>
+                ${result}`);
+        }).catch((err) => {
+            res.status(400).send(err.message)
         })
-        .catch((err) => {
-            res.status(400).send(err.message);
-        });
 };
 
-exports.removeCropById = async (req, res) => {
-    await Crop.findByIdAndDelete(req.params.id)
-        .then((data) => {
+// Delete a single crop
+removeCropById = async (req, res) => {
+    Crop.findByIdAndDelete(req.params.cid)
+        .then((result) => {
             res.send(`removed crop details => 
-            crop_name: ${data.crop_name}, 
-            crop_tag: ${data.crop_tag},
-            crop_quantity: ${data.crop_quantity}, 
-            crop_price: ${data.crop_price}, 
-            crop_description: ${data.crop_description}`);
+            ${result}`);
+        }).catch((err) => {
+            res.status(400).send(err.message);
+        });
+};
+
+// Delete all crops for a user
+removeCrops = async (req, res) => {
+    Crop.findOneAndDelete({ user_id: req.query.uid })
+        .then((result) => {
+            res.send(`removed all crops details =>
+                ${result}`)
         })
         .catch((err) => {
             res.status(400).send(err.message);
         });
 };
 
-exports.removeCrops = async (req, res) => {
-    await Crop.deleteMany({})
-        .then((data) => {
-            res.send(`removed all crops =>
-            ${data}`);
-        })
-        .catch((err) => {
-            res.status(400).send(err.message);
-        })
-};
+module.exports = {
+    viewCrop,
+    addCrop,
+    updateCrop,
+    removeCropById,
+    removeCrops
+}
