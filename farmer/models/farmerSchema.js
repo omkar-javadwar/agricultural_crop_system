@@ -1,5 +1,7 @@
-const mongoose = require('mongoose')
-const validator = require('mongoose-validator')
+const mongoose = require('mongoose');
+const validator = require('mongoose-validator');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const farmerSchema = mongoose.Schema({
     name: {
@@ -79,7 +81,30 @@ const farmerSchema = mongoose.Schema({
                 type: String
             }
         }
+    },
+    crops: {
+		type: Array,
+		required: true
+	}
+});
+
+// generating token
+farmerSchema.methods.generateAuthToken = async () => {
+    try {
+        const token = jwt.sign({ email: this.email }, "mysecretkey");
+        return token;
+    } catch (err) {
+        console.log(err);
     }
+}
+
+// hashing password
+farmerSchema.pre('save', async function (next) {
+    // only hash the password if it has been modified (or is new)
+    if (this.isModified('password')) {
+        this.password = await bcrypt.hash(this.password, 10);
+    }
+    next();
 });
 
 const Farmer = mongoose.model('farmer', farmerSchema);

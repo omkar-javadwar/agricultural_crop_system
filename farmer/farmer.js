@@ -2,6 +2,9 @@ const express = require('express');
 const dbConnection = require('./models/farmerDB');
 const farmerRoutes = require('./routes/farmerRoutes');
 const bankDetailsRoutes = require('./routes/bankDetailsRoutes');
+const cropRoutes = require('./routes/cropRoutes');
+const cookieParser = require('cookie-parser');
+
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
@@ -12,8 +15,9 @@ const port = process.env.PORT || 5000;
 // middleware 
 farmer.use(express.urlencoded({ extended: false }));
 farmer.use(express.json());
+farmer.use(cookieParser());
 
-farmer.use('/farmer', farmerRoutes);
+farmer.use('/farmer', farmerRoutes, cropRoutes);
 farmer.use('/bank_details', bankDetailsRoutes);
 
 const options = {

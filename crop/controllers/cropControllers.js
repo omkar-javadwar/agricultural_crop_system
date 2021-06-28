@@ -46,8 +46,8 @@ addCrop = async (req, res) => {
     // Create new crop instance..
     const crop = new Crop(newCrop)
     crop.save().then((result) => {
-        res.send(`new crop details =>
-                ${result}`);
+        // new crop details =>
+        res.send(result);
     }).catch((err) => {
         res.status(400).send(err.message);
     })
@@ -74,8 +74,8 @@ updateCrop = async (req, res) => {
 removeCropById = async (req, res) => {
     Crop.findByIdAndDelete(req.params.cid)
         .then((result) => {
-            res.send(`removed crop details => 
-            ${result}`);
+            // removed crop details => 
+            res.send(result);
         }).catch((err) => {
             res.status(400).send(err.message);
         });

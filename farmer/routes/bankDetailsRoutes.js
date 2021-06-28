@@ -1,5 +1,6 @@
 const express = require('express');
 const bankDetailsControllers = require('../controllers/bankDetailsControllers');
+const authentication = require('../../middleware/authentication');
 
 const router = express.Router();
 
@@ -8,31 +9,35 @@ const router = express.Router();
  * /bank_details/{id}:
  *   get:
  *     summary: View bank_details by ID
+ *     tags:
+ *       - Bank Details Management
  *     parameters:
  *      - in: path
  *        name: id
  *        required: true
  *        type: string
- *        description: Bank details ID
+ *        description: Farmer ID
  *     responses:
  *       200:
  *         description: Returns the requested bank_details
  */
 
-router.get('/:id', bankDetailsControllers.getBankDetails);
+router.get('/:id', authentication, bankDetailsControllers.getBankDetails);
 
 /**
  * @swagger
  * /bank_details/{id}:
  *   put:
  *     summary: Update bank_details details
+ *     tags:
+ *       - Bank Details Management
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
  *           required: true
- *           description: Bank details ID
+ *           description: Farmer ID
  *     requestBody:
  *       required: true
  *       content:
@@ -44,6 +49,6 @@ router.get('/:id', bankDetailsControllers.getBankDetails);
  *         description: Returns the requested bank_details
  */
 
-router.put('/:id', bankDetailsControllers.updateBankDetails);
+router.put('/:id', authentication, bankDetailsControllers.updateBankDetails);
 
 module.exports = router;
