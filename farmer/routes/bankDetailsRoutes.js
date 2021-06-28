@@ -16,7 +16,6 @@ const router = express.Router();
  *        name: id
  *        required: true
  *        type: string
- *        description: Farmer ID
  *     responses:
  *       200:
  *         description: Returns the requested bank_details
@@ -37,13 +36,21 @@ router.get('/:id', authentication, bankDetailsControllers.getBankDetails);
  *         schema:
  *           type: string
  *           required: true
- *           description: Farmer ID
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
+ *             properties:
+ *               bank_name:
+ *                 type: string
+ *               account_number:
+ *                 type: string
+ *               IFSC_code:
+ *                 type: string
+ *               upi_id:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Returns the requested bank_details

@@ -16,7 +16,6 @@ const router = express.Router();
  *        name: id
  *        required: true
  *        type: string
- *        description: Farmer ID
  *     responses:
  *       200:
  *         description: Returns the requested farmer
@@ -104,7 +103,7 @@ router.post('/signup', farmerControllers.addFarmer);
  *         description: Returns the requested farmer
  */
 
- router.post('/signin', authentication, farmerControllers.loginFarmer);
+router.post('/signin', authentication, farmerControllers.loginFarmer);
 
 /**
  * @swagger
@@ -119,7 +118,6 @@ router.post('/signup', farmerControllers.addFarmer);
  *         schema:
  *           type: string
  *           required: true
- *           description: Farmer ID
  *     requestBody:
  *       required: true
  *       content:
@@ -165,7 +163,6 @@ router.put('/:id', authentication, farmerControllers.updateFarmer);
  *        name: id
  *        required: true
  *        type: string
- *        description: Farmer ID
  *     responses:
  *       200:
  *         description: Returns the requested farmer

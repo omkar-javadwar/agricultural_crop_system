@@ -99,7 +99,7 @@ router.put("/:cid/crop", authentication, farmerControllers.updateCrop);
  * @swagger
  * /farmer/{cid}/crop:
  *   delete:
- *     summary: Delete a crop by farmer Id
+ *     summary: Delete a crop using crop_id and user_id
  *     tags:
  *       - Crop Management
  *     parameters:
@@ -115,26 +115,6 @@ router.put("/:cid/crop", authentication, farmerControllers.updateCrop);
  *         description: Returns the requested farmer
  */
 
-router.delete("/:cid/crop", authentication, farmerControllers.removeCropById);
-
-/**
- * @swagger
- * /farmer/{uid}/crop:
- *   delete:
- *     summary: Delete all crops by farmer Id
- *     tags:
- *       - Crop Management
- *     parameters:
- *      - in: path
- *        name: uid
- *        required: true
- *        type: string
- *        description: Farmer ID
- *     responses:
- *       200:
- *         description: Returns the requested farmer
- */
-
-router.delete("/:uid/crop", authentication, farmerControllers.removeCrops);
+router.delete("/:cid/crop", authentication, farmerControllers.removeCrop);
 
 module.exports = router;

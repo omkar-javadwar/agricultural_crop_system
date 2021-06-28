@@ -29,7 +29,7 @@ addCrop = async (req, res) => {
                 user.save().then(() => {
                     res.send(`Crop created for user: ${user.email} with crop_id: ${cropResponse.data._id}`)
                 }).catch((err) => {
-                    res.send("failed to add crop_id in user's details")
+                    res.send(`failed to add crop_id in user's details ${err.message}`)
                 })
             })
         } else {
@@ -56,7 +56,7 @@ updateCrop = async (req, res) => {
 };
 
 // Delete single crop for a farmer
-removeCropById = async (req, res) => {
+removeCrop = async (req, res) => {
     try {
         const cropResponse = await axios.delete(`http://localhost:3001/crop/${req.params.cid}`)
         if (cropResponse.status === 200) {
@@ -81,32 +81,9 @@ removeCropById = async (req, res) => {
     }
 };
 
-// Delete all the crops for a farmer
-removeCrops = async (req, res) => {
-    try {
-        const cropResponse = await axios.delete(`http://localhost:3001/crop?uid=${req.params.uid}`)
-        if (cropResponse.status === 200) {
-            Farmer.findById(req.params.uid, (err, user) => {
-                user.crops.splice(0, user.crops.length);
-                user.save().then(() => {
-                    res.send(`All crops deleted for user: ${user.email}`)
-                }).catch((err) => {
-                    res.send("failed to delete crops in user's details")
-                })
-            })
-        } else {
-            res.send("Crops are not deleted..")
-        }
-    } catch (err) {
-        res.status(400).send("Error while deleting the crops")
-        console.log(err.data)
-    }
-};
-
 module.exports = {
     viewCrop,
     addCrop,
     updateCrop,
-    removeCropById,
-    removeCrops
+    removeCrop
 }

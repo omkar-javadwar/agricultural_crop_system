@@ -28,6 +28,9 @@ addFarmer = async (req, res) => {
 
     //json web token
     const token = await farmer.generateAuthToken();
+
+    console.log(token);
+  
     res.cookie('jwt', token, {
         expires: new Date(Date.now() + 24 * 60 * 60),
         httpOnly: true
