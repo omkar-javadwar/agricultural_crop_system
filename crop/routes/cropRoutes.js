@@ -5,6 +5,18 @@ const router = express.Router();
 
 /**
  * @swagger
+ * /crop/all:
+ *   get:
+ *     description: Get all crops
+ *     responses:
+ *       200:
+ *         description: Returns the requested crop
+ */
+
+router.get('/all', cropControllers.viewCrops);
+
+/**
+ * @swagger
  * /crop:
  *   get:
  *     description: Get crop details

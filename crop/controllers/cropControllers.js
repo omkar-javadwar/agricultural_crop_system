@@ -1,5 +1,11 @@
 const Crop = require('../models/cropSchema');
 
+viewCrops = async (req, res) => {
+    Crop.find()
+    .then((result) => res.send(result))
+    .catch(err => res.status(400).send(err.message) )
+}
+
 // GET all crops for a user
 // GET single crop for a user
 /**
@@ -94,6 +100,7 @@ removeCrops = async (req, res) => {
 };
 
 module.exports = {
+    viewCrops,
     viewCrop,
     addCrop,
     updateCrop,

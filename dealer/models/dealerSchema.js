@@ -58,6 +58,10 @@ const dealerSchema = mongoose.Schema({
             maxlength: 6,
             require: [true, 'zip code is required']
         }
+    },
+    cart:{
+        type: Array,
+		required: true
     }
 });
 
