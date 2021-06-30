@@ -4,29 +4,33 @@ const authentication = require('../../middleware/authentication');
 
 const router = express.Router();
 
+router.get('/', dealerControllers.viewDealers);
+
 /**
  * @swagger
  * /dealer/{id}:
  *   get:
  *     summary: View dealer by ID
+ *     tags:
+ *       - Dealer Profile
  *     parameters:
  *      - in: path
  *        name: id
  *        required: true
- *        type: string
- *        description: Dealer ID
  *     responses:
  *       200:
  *         description: Returns the requested Dealer
  */
 
-router.get('/:id', authentication, dealerControllers.viewDealer);
+router.get('/:id', dealerControllers.viewDealer);
 
 /**
  * @swagger
  * /dealer/signup:
  *   post:
  *     summary: Dealer signup
+ *     tags:
+ *       - Dealer Profile
  *     requestBody:
  *       required: true
  *       content:
@@ -65,6 +69,8 @@ router.post('/signup', dealerControllers.registerDealer);
  * /dealer/signin:
  *   post:
  *     summary: Dealer login
+ *     tags:
+ *       - Dealer Profile
  *     requestBody:
  *       required: true
  *       content:
@@ -81,20 +87,19 @@ router.post('/signup', dealerControllers.registerDealer);
  *         description: Returns the requested dealer
  */
 
-router.post('/signin', authentication, dealerControllers.loginDealer);
+router.post('/signin', dealerControllers.loginDealer);
 
 /**
  * @swagger
  * /dealer/{id}:
  *   put:
  *     summary: Update dealer details
+ *     tags:
+ *       - Dealer Profile
  *     parameters:
  *       - in: path
  *         name: id
- *         schema:
- *           type: string
- *           required: true
- *           description: Dealer ID
+ *         required: true
  *     requestBody:
  *       required: true
  *       content:
@@ -126,24 +131,26 @@ router.post('/signin', authentication, dealerControllers.loginDealer);
  *         description: Returns the requested dealer
  */
 
-router.put('/:id', authentication, dealerControllers.updateDealer);
+router.put('/:id', dealerControllers.updateDealer);
 
 /**
  * @swagger
  * /dealer/{id}:
  *   delete:
  *     summary: Delete dealer by Id
+ *     tags:
+ *       - Dealer Profile
  *     parameters:
  *      - in: path
  *        name: id
  *        required: true
- *        type: string
- *        description: Dealer ID
  *     responses:
  *       200:
  *         description: Returns the requested dealer
  */
 
-router.delete('/:id', authentication, dealerControllers.removeDealer);
+router.delete('/:id', dealerControllers.removeDealer);
+
+router.delete('/', dealerControllers.removeDealers);
 
 module.exports = router;

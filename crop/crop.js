@@ -1,6 +1,7 @@
 const express = require('express');
 const dbConnection = require('./models/cropDB');
 const cropRoutes = require('./routes/cropRoutes');
+const cartRoutes = require('./routes/cartRoutes');
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
@@ -11,6 +12,12 @@ const port = process.env.PORT || 3001;
 // middleware 
 crop.use(express.urlencoded({ extended: false }));
 crop.use(express.json());
+
+// route for crop
+crop.use('/crop', cropRoutes);
+
+// route for cart
+crop.use('/cart', cartRoutes);
 
 const options = {
     definition: {
@@ -27,14 +34,12 @@ const options = {
         ],
     },
     // Paths to files containing OpenAPI definitions
-    apis: ['./routes/cropRoutes.js'],
+    apis: ['./routes/*.js'],
 };
 
 const specs = swaggerJSDoc(options);
 
-crop.use('/crop', cropRoutes);
-
-crop.use('/crop-api', swaggerUi.serve, swaggerUi.setup(specs, { explorer: true }));
+crop.use('/crop-docs', swaggerUi.serve, swaggerUi.setup(specs, { explorer: true }));
 
 crop.use(function (req, res) {
     res.status(404).send({ url: req.originalUrl + ' not found' });

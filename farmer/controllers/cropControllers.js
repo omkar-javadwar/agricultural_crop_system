@@ -43,7 +43,7 @@ addCrop = async (req, res) => {
 
 // Update single crop for a farmer
 updateCrop = async (req, res) => {
-    await axios.put(`http://localhost:3001/crop/${req.params.cid}`, {
+    await axios.patch(`http://localhost:3001/crop/${req.params.cid}`, {
         crop_quantity: req.body.crop_quantity,
         crop_price: req.body.crop_price,
         crop_description: req.body.crop_description

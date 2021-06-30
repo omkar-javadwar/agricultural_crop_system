@@ -13,8 +13,6 @@ const router = express.Router();
  *      - in: path
  *        name: id
  *        required: true
- *        type: string
- *        description: Admin ID
  *     description: Get admin by id
  *     responses:
  *       200:
@@ -71,7 +69,7 @@ router.post('/signup', adminControllers.registerAdmin);
 *         description: Returns the requested admin
 */
 
-router.post('/signin', authentication, adminControllers.loginAdmin);
+router.post('/signin', adminControllers.loginAdmin);
 
 /**
  * @swagger
@@ -81,10 +79,7 @@ router.post('/signin', authentication, adminControllers.loginAdmin);
  *          parameters:
  *            - in: path
  *              name: id
- *              schema:
- *                  type: string
  *              required: true
- *              description: Admin id
  *          requestBody:
  *              required: true
  *              content:
@@ -114,8 +109,6 @@ router.put('/:id', authentication, adminControllers.updateAdmin);
  *      - in: path
  *        name: id
  *        required: true
- *        type: string
- *        description: Admin ID.
  *     description: Delete admin by id
  *     responses:
  *       200:

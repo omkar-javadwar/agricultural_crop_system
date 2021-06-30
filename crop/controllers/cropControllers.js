@@ -1,9 +1,16 @@
 const Crop = require('../models/cropSchema');
 
+// get all crops from collection
 viewCrops = async (req, res) => {
     Crop.find()
-    .then((result) => res.send(result))
-    .catch(err => res.status(400).send(err.message) )
+        .then((result) => {
+            if (result) {
+                res.send(result)
+            } else {
+                res.status(400).send('no crops are available to display')
+            }
+        })
+        .catch(err => res.status(400).send(err.message))
 }
 
 // GET all crops for a user
@@ -81,7 +88,11 @@ removeCropById = async (req, res) => {
     Crop.findByIdAndDelete(req.params.cid)
         .then((result) => {
             // removed crop details => 
-            res.send(result);
+            if(result){
+                res.send(result)
+            }else{
+                res.status(400).send('no crop is available to display')
+            }
         }).catch((err) => {
             res.status(400).send(err.message);
         });
@@ -91,8 +102,11 @@ removeCropById = async (req, res) => {
 removeCrops = async (req, res) => {
     Crop.findOneAndDelete({ user_id: req.query.uid })
         .then((result) => {
-            res.send(`removed all crops details =>
-                ${result}`)
+            if(result){
+                res.send(result)
+            }else{
+                res.status(400).send('no crops are available to display')
+            }
         })
         .catch((err) => {
             res.status(400).send(err.message);

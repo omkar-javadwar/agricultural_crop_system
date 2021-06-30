@@ -1,51 +1,35 @@
 const express = require('express');
-const cropControllers = require('../controllers/cropControllers');
+const cartController = require('../controllers/cartController');
 
 const router = express.Router();
 
 /**
  * @swagger
- * /crop/all:
+ * /cart:
  *   get:
- *     summary: Get all crops details
+ *     summary: Get crat details by cart_id and user_id
  *     tags:
- *       - Crop Management
- *     responses:
- *       200:
- *         description: Returns the requested crop
- */
-
-router.get('/all', cropControllers.viewCrops);
-
-/**
- * @swagger
- * /crop:
- *   get:
- *     summary: Get crop details by crop_id and user_id
- *     tags:
- *       - Crop Management
+ *       - Cart Management
  *     parameters:
  *       - in: query
  *         name: cid
  *       - in: query
  *         name: uid
  *         required: true
- *     schema:
- *       type: object
  *     responses:
  *       200:
- *         description: Returns the requested crop
+ *         description: Returns the requested cart
  */
 
-router.get('/', cropControllers.viewCrop);
+router.get('/', cartController.viewCart);
 
 /**
  * @swagger
- * /crop:
+ * /cart:
  *   post:
- *     summary: Create new crop
+ *     summary: Create new cart
  *     tags:
- *       - Crop Management
+ *       - Cart Management
  *     requestBody:
  *       required: true
  *       content:
@@ -57,28 +41,24 @@ router.get('/', cropControllers.viewCrop);
  *                 type: string
  *               user_id:
  *                 type: string
- *               crop_tag:
- *                 type: string
  *               crop_quantity:
  *                 type: number
  *               crop_price:
  *                 type: number
- *               crop_description:
- *                 type: string
  *     responses:
  *       200:
- *         description: Returns the requested crop
+ *         description: Returns the requested cart
  */
 
-router.post('/', cropControllers.addCrop);
+router.post('/', cartController.addCart);
 
 /**
  * @swagger
- * /crop/{cid}:
- *   put:
- *     summary: Update crop details
+ * /cart/{cid}:
+ *   patch:
+ *     summary: Create new cart
  *     tags:
- *       - Crop Management
+ *       - Cart Management
  *     parameters:
  *       - in: path
  *         name: cid
@@ -92,51 +72,47 @@ router.post('/', cropControllers.addCrop);
  *             properties:
  *               crop_quantity:
  *                 type: number
- *               crop_price:
- *                 type: number
- *               crop_description:
- *                 type: string
  *     responses:
  *       200:
- *         description: Returns the requested crop
+ *         description: Returns the requested cart
  */
 
-router.put('/:cid', cropControllers.updateCrop);
+router.patch('/:cid', cartController.updateCart);
 
 /**
  * @swagger
- * /crop/{cid}:
+ * /cart/{cid}:
  *   delete:
  *     summary: Remove crop by crop_id
  *     tags:
- *       - Crop Management
+ *       - Cart Management
  *     parameters:
  *      - in: path
  *        name: cid
  *        required: true
  *     responses:
  *       200:
- *         description: Returns the requested crop
+ *         description: Returns the requested cart
  */
 
-router.delete('/:cid', cropControllers.removeCropById);
+router.delete('/:cid', cartController.removeCart);
 
 /**
  * @swagger
- * /crop:
+ * /cart:
  *   delete:
  *     summary: Remove all crops for user_id
  *     tags:
- *       - Crop Management
+ *       - Cart Management
  *     parameters:
  *       - in: query
  *         name: uid
  *         required: true
  *     responses:
  *       200:
- *         description: Returns the requested crop
+ *         description: Returns the requested cart
  */
 
-router.delete('/', cropControllers.removeCrops);
+router.delete('/', cartController.removeCarts);
 
 module.exports = router;

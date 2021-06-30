@@ -8,91 +8,87 @@ viewCrops = async (req, res) => {
         .then((result) => {
             res.send(result.data)
         }).catch((err) => {
-            res.status(400).send(err)
+            res.status(400).send(err.message)
         });
 };
 
-// GET all crops for a Dealer
-viewCrop = async (req, res) => {
-    axios.get(`http://localhost:3001/crop?uid=${req.params.uid}`)
+// GET all items for a Dealer's cart
+viewCart = async (req, res) => {
+    axios.get(`http://localhost:3001/cart?uid=${req.params.uid}`)
         .then((result) => {
             res.send(result.data)
         }).catch((err) => {
-            res.status(400).send(err)
+            res.status(400).send(err.message)
         });
 };
 
-// Create new crop for a Dealer
+// Add new item for a Dealer's cart
 addCrop = async (req, res) => {
     try {
-        const cropResponse = await axios.post("http://localhost:3001/crop", {
+        const cartResponse = await axios.post("http://localhost:3001/cart", {
             crop_name: req.body.crop_name,
             user_id: mongoose.Types.ObjectId(req.params.uid),
-            crop_tag: req.body.crop_tag,
             crop_quantity: req.body.crop_quantity,
             crop_price: req.body.crop_price
         })
-        if (cropResponse.status === 200) {
+        if (cartResponse.status === 200) {
             Dealer.findById(req.params.uid, (err, user) => {
-                user.cart.push(cropResponse.data._id)
+                user.cart.push(cartResponse.data._id)
                 user.save().then(() => {
-                    res.send(`Crop added in cart for user: ${user.email} with crop_id: ${cropResponse.data._id}`)
+                    res.send(`Crop added in cart for user: ${user.email} with crop_id: ${cartResponse.data._id}`)
                 }).catch((err) => {
-                    res.send("failed to add crop_id in user's details")
+                    res.send("failed to add crop_id into cart")
                 })
             })
         } else {
-            res.send("Crop not added..")
+            res.send("Crop not added into cart")
         }
     } catch (err) {
-        res.status(400).send("Error while creating the crop")
+        res.status(400).send("Error while adding crop into cart")
         console.log(err.data)
     }
 }
 
-// Update single crop for a Dealer
-updateCrop = async (req, res) => {
-    await axios.put(`http://localhost:3001/crop/${req.params.cid}`, {
-        crop_quantity: req.body.crop_quantity
-    })
-        .then(result => {
-            res.send(result.data)
+// update cart for a dealer
+updateCart = async (req, res) => {
+    axios.patch(`http://localhost:3001/cart/${req.params.cid}`, req.body)
+        .then((response) => {
+            res.send(response.data);
         }).catch((err) => {
-            res.status(400).send(err)
-        });
-};
+            res.status(400).send(err.message);
+        })
+}
 
 // Delete single crop for a Dealer
 removeCrop = async (req, res) => {
     try {
-        const cropResponse = await axios.delete(`http://localhost:3001/crop/${req.params.cid}`)
-        if (cropResponse.status === 200) {
+        const cartResponse = await axios.delete(`http://localhost:3001/cart/${req.params.cid}`)
+        if (cartResponse.status === 200) {
             Dealer.findById(req.query.uid, (err, user) => {
                 for (var i = 0; i < user.cart.length; i++) {
-                    if (user.cart[i] === cropResponse.data._id) {
+                    if (user.cart[i] === cartResponse.data._id) {
                         user.cart.splice(i, 1);
                     }
                 }
                 user.save().then(() => {
-                    res.send(`Crop deleted for user: ${user.email} with crop_id: ${cropResponse.data._id}`)
+                    res.send(`Crop deleted for user: ${user.email} with crop_id: ${cartResponse.data._id}`)
                 }).catch((err) => {
-                    res.send("failed to delete crop_id in user's details")
+                    res.send("Crop not added into cart")
                 })
             })
         } else {
-            res.send("Crop not deleted..")
+            res.send("Crop not added into cart")
         }
     } catch (err) {
-        res.status(400).send("Error while deleting the crop")
+        res.status(400).send("Error while deleting a crop from cart")
         console.log(err.data)
     }
 };
 
-
 module.exports = {
     viewCrops,
-    viewCrop,
+    viewCart,
     addCrop,
-    updateCrop,
+    updateCart,
     removeCrop
 }

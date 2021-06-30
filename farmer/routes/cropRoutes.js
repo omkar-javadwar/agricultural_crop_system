@@ -15,8 +15,6 @@ const router = express.Router();
  *      - in: path
  *        name: uid
  *        required: true
- *        type: string
- *        description: Farmer ID
  *     responses:
  *       200:
  *         description: Returns the requested farmer
@@ -35,8 +33,6 @@ router.get("/:uid/crop", authentication, farmerControllers.viewCrop);
  *      - in: path
  *        name: uid
  *        required: true
- *        type: string
- *        description: Farmer ID
  *     requestBody:
  *       required: true
  *       content:
@@ -71,10 +67,7 @@ router.post("/:uid/crop", authentication, farmerControllers.addCrop);
  *     parameters:
  *       - in: path
  *         name: cid
- *         schema:
- *           type: string
- *           required: true
- *           description: Crop ID
+ *         required: true
  *     requestBody:
  *       required: true
  *       content:
@@ -106,7 +99,6 @@ router.put("/:cid/crop", authentication, farmerControllers.updateCrop);
  *      - in: path
  *        name: cid
  *        required: true
- *        type: string
  *      - in: query
  *        name: uid
  *        required: true

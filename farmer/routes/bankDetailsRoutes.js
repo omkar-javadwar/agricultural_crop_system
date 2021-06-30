@@ -15,7 +15,6 @@ const router = express.Router();
  *      - in: path
  *        name: id
  *        required: true
- *        type: string
  *     responses:
  *       200:
  *         description: Returns the requested bank_details
@@ -33,9 +32,7 @@ router.get('/:id', authentication, bankDetailsControllers.getBankDetails);
  *     parameters:
  *       - in: path
  *         name: id
- *         schema:
- *           type: string
- *           required: true
+ *         required: true
  *     requestBody:
  *       required: true
  *       content:

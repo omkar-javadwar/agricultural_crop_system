@@ -17,7 +17,7 @@ exports.registerAdmin = async (req, res) => {
     const token = await user.generateAuthToken();
 
     res.cookie('jwt', token, {
-        expires: new Date(Date.now() + 24 * 60 * 60),
+        expires: new Date(Date.now() + 3600000),
         httpOnly: true
     });
 
@@ -41,6 +41,14 @@ exports.loginAdmin = async (req, res) => {
 
         const user = await Admin.findOne({ username: username });
         const isMatch = await bcrypt.compare(password, user.password);
+
+        // JWT
+        const token = await user.generateAuthToken();
+
+        res.cookie('jwt', token, {
+            expires: new Date(Date.now() + 3600000),
+            httpOnly: true
+        });
 
         if (isMatch) {
             res.status(201).send('login successful');

@@ -1,27 +1,37 @@
 const Dealer = require('../models/dealerSchema');
 const bcrypt = require('bcryptjs');
 
-viewDealer = async (req, res) => {
-    Dealer.findById(req.params.id)
-        .then((data) => {
-            // res.send(`Dealer details =>
-            //     name: ${data.name},
-            //     email: ${data.email},
-            //     password: ${data.password},
-            //     contact: ${data.contact},
-            //     address: {
-            //         street: ${data.address.street},
-            //         city: ${data.address.city},
-            //         state: ${data.address.state},
-            //         zip: ${data.address.zip}
-            //     }`);
-            res.send(data);
+// get all dealers
+viewDealers = async (req, res) => {
+    Dealer.find()
+        .then((result) => {
+            if (result) {
+                res.send(result);
+            } else {
+                res.status(400).send('no dealer data available to display');
+            }
         })
         .catch((err) => {
             res.status(400).send(err.message);
         });
 };
 
+// get dealer by id
+viewDealer = async (req, res) => {
+    Dealer.findById(req.params.id)
+        .then((result) => {
+            if (result) {
+                res.send(result);
+            } else {
+                res.status(400).send('invalid dealer id');
+            }
+        })
+        .catch((err) => {
+            res.status(400).send(err.message);
+        });
+};
+
+// add new dealer
 registerDealer = async (req, res) => {
 
     const newDealer = {
@@ -37,29 +47,18 @@ registerDealer = async (req, res) => {
     //json web token
     const token = await dealer.generateAuthToken();
     res.cookie('jwt', token, {
-        expires: new Date(Date.now() + 24 * 60 * 60),
+        expires: new Date(Date.now() + 6000000),
         httpOnly: true
     });
 
-    dealer.save().then((data) => {
-        // Dealer.create(req.body).then((data) => {
-        // res.send(`New dealer details =>
-        //         name: ${data.name},
-        //         email: ${data.email},
-        //         password: ${data.password},
-        //         contact: ${data.contact},
-        //         address: {
-        //             street: ${data.address.street},
-        //             city: ${data.address.city},
-        //             state: ${data.address.state},
-        //             zip: ${data.address.zip}
-        //         }`);
-        res.send(data);
+    dealer.save().then((result) => {
+        res.send(result);
     }).catch((err) => {
         res.status(400).send(err.message);
     });
 };
 
+// login using details
 loginDealer = async (req, res) => {
     try {
         const email = req.body.email;
@@ -68,19 +67,28 @@ loginDealer = async (req, res) => {
         const user = await Dealer.findOne({ email: email });
         const isMatch = await bcrypt.compare(password, user.password);
 
+        //json web token
+        const token = await user.generateAuthToken();
+
+        res.cookie('jwt', token, {
+            expires: new Date(Date.now() + 6000000),
+            httpOnly: true
+        });
+        
         if (isMatch) {
             res.status(201).send('login successful');
         } else {
-            res.send("invalid password");
+            res.send('invalid password');
         }
     } catch (err) {
-        res.status(400).send("invalid user");
+        res.status(400).send('invalid user');
     }
 }
 
+// update dealer
 updateDealer = async (req, res) => {
     req.body.password = await bcrypt.hash(req.body.password, 10);
-    
+
     const dealer_details = {
         "name": req.body.name,
         "email": req.body.email,
@@ -90,40 +98,35 @@ updateDealer = async (req, res) => {
     }
 
     Dealer.findByIdAndUpdate(req.params.id, dealer_details)
-        .then((data) => {
-            // res.send(`Updated dealer details =>
-            //     name: ${data.name},
-            //     email: ${data.email},
-            //     password: ${data.password},
-            //     contact: ${data.contact},
-            //     address: {
-            //         street: ${data.address.street},
-            //         city: ${data.address.city},
-            //         state: ${data.address.state},
-            //         zip: ${data.address.zip}
-            //     }`);
-            res.send(data);
+        .then((result) => {
+            res.send(result);
         })
         .catch((err) => {
             res.status(400).send(err.message);
         });
 };
 
+// remove dealer
 removeDealer = async (req, res) => {
     Dealer.findByIdAndDelete(req.params.id)
-        .then((data) => {
-            // res.send(`Removed dealer details =>
-            //     name: ${data.name},
-            //     email: ${data.email},
-            //     password: ${data.password},
-            //     contact: ${data.contact},
-            //     address: {
-            //         street: ${data.address.street},
-            //         city: ${data.address.city},
-            //         state: ${data.address.state},
-            //         zip: ${data.address.zip}
-            //     }`);
-            res.send(data);
+        .then((result) => {
+            if (result) {
+                res.send(`removed dealer =>
+            ${result}`)
+            } else {
+                res.send('invalid dealer id')
+            }
+        })
+        .catch((err) => {
+            res.status(400).send(err.message);
+        });
+};
+
+// remove all dealers
+removeDealers = async (req, res) => {
+    Dealer.deleteMany({})
+        .then((result) => {
+            res.send(`removed ${result.deletedCount} dealers`);
         })
         .catch((err) => {
             res.status(400).send(err.message);
@@ -131,9 +134,11 @@ removeDealer = async (req, res) => {
 };
 
 module.exports = {
+    viewDealers,
     viewDealer,
     registerDealer,
     loginDealer,
     updateDealer,
-    removeDealer
+    removeDealer,
+    removeDealers
 }
