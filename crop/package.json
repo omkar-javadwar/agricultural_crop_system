@@ -5,7 +5,8 @@
   "main": "crop.js",
   "dependencies": {
     "express": "^4.17.1",
-    "mongoose": "^5.12.14"
+    "mongoose": "^5.12.14",
+    "nodemon": "^2.0.8"
   },
   "devDependencies": {
     "chai": "^4.3.4",
