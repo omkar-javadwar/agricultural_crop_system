@@ -6,20 +6,6 @@ const router = express.Router();
 
 /**
  * @swagger
- * /dealer/crop/all:
- *   get:
- *     summary: Get all crops
- *     tags:
- *       - Crops Details
- *     responses:
- *       200:
- *         description: Returns the requested crop
- */
-
-router.get("/crop/all", authentication, cartControllers.viewCrops);
-
-/**
- * @swagger
  * /dealer/{uid}/cart:
  *   get:
  *     summary: View crop by dealer ID
@@ -115,5 +101,23 @@ router.patch('/:cid/cart', authentication, cartControllers.updateCart);
  */
 
 router.delete("/:cid/cart", authentication, cartControllers.removeCrop);
+
+/**
+ * @swagger
+ * /dealer/{uid}/cart/bill:
+ *   get:
+ *     summary: View bill by dealer ID
+ *     tags:
+ *       - Cart Management
+ *     parameters:
+ *      - in: path
+ *        name: uid
+ *        required: true
+ *     responses:
+ *       200:
+ *         description: Returns the requested dealer
+ */
+
+ router.get("/:uid/cart/bill", authentication, cartControllers.viewBill);
 
 module.exports = router;

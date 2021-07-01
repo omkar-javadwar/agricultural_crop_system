@@ -17,7 +17,7 @@ addCrop = async (req, res) => {
     try {
         const cropResponse = await axios.post("http://localhost:3001/crop", {
             crop_name: req.body.crop_name,
-            user_id: mongoose.Types.ObjectId(req.params.uid),
+            farmer_id: mongoose.Types.ObjectId(req.params.uid),
             crop_tag: req.body.crop_tag,
             crop_quantity: req.body.crop_quantity,
             crop_price: req.body.crop_price,
@@ -43,7 +43,7 @@ addCrop = async (req, res) => {
 
 // Update single crop for a farmer
 updateCrop = async (req, res) => {
-    await axios.patch(`http://localhost:3001/crop/${req.params.cid}`, {
+    await axios.put(`http://localhost:3001/crop/${req.params.cid}`, {
         crop_quantity: req.body.crop_quantity,
         crop_price: req.body.crop_price,
         crop_description: req.body.crop_description
@@ -51,7 +51,7 @@ updateCrop = async (req, res) => {
         .then(result => {
             res.send(result.data)
         }).catch((err) => {
-            res.status(400).send(err)
+            res.status(400).send(err.message)
         });
 };
 

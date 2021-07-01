@@ -19,7 +19,11 @@ viewFarmers = async (req, res) => {
 viewFarmer = async (req, res) => {
     Farmer.findById(req.params.id)
         .then((data) => {
-            res.send(data);
+            if (data) {
+                res.send(data);
+            } else {
+                res.status(400).send('invalid id');
+            }
         })
         .catch((err) => {
             res.status(400).send(err.message);
@@ -109,7 +113,11 @@ updateFarmer = async (req, res) => {
 removeFarmer = async (req, res) => {
     Farmer.findByIdAndDelete(req.params.id)
         .then((data) => {
-            res.send(data);
+            if (data) {
+                res.send(data);
+            } else {
+                res.status(400).send('invalid id');
+            }
         })
         .catch((err) => {
             res.status(400).send(err.message);

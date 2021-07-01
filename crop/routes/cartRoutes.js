@@ -7,7 +7,7 @@ const router = express.Router();
  * @swagger
  * /cart:
  *   get:
- *     summary: Get crat details by cart_id and user_id
+ *     summary: Get cart details by cart_id and user_id
  *     tags:
  *       - Cart Management
  *     parameters:
@@ -114,5 +114,23 @@ router.delete('/:cid', cartController.removeCart);
  */
 
 router.delete('/', cartController.removeCarts);
+
+/**
+ * @swagger
+ * /cart/bill/{uid}:
+ *   get:
+ *     summary: Get bill
+ *     tags:
+ *       - Cart Management
+ *     parameters:
+ *       - in: path
+ *         name: uid
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Returns the requested cart
+ */
+
+router.get('/bill/:uid', cartController.viewBill);
 
 module.exports = router;

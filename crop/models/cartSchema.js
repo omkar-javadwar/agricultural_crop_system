@@ -6,9 +6,9 @@ const cartSchema = new mongoose.Schema({
         trim: true,
         required: [true, 'name is required']
     },
-    user_id: {
+    dealer_id: {
         type: mongoose.SchemaTypes.ObjectId,
-        required: [true, 'user id required']
+        required: [true, 'dealer id required']
     },
     crop_quantity: {
         type: Number,

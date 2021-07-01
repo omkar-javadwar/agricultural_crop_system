@@ -5,7 +5,7 @@ const Cart = require('../models/cartSchema');
 viewCart = async (req, res) => {
 
     if (!req.query.cid && req.query.uid) {
-        Cart.find({ user_id: req.query.uid }).then(result => {
+        Cart.find({ dealer_id: req.query.uid }).then(result => {
             if (result) {
                 res.send(`all cart details =>
                 ${result}`);
@@ -14,7 +14,7 @@ viewCart = async (req, res) => {
             }
         })
     } else if (req.query.cid && req.query.uid) {
-        Cart.find({ _id: req.query.cid, user_id: req.query.uid }).then((result) => {
+        Cart.find({ _id: req.query.cid, dealer_id: req.query.uid }).then((result) => {
             if (result) {
                 res.send(`cart details =>
                 ${result}`);
@@ -25,11 +25,31 @@ viewCart = async (req, res) => {
     }
 }
 
+// view bill
+viewBill = async (req, res) => {
+    try {
+        const cartResponse = await Cart.find({ dealer_id: req.params.uid });
+        if (cartResponse) {
+            var total = 0;
+            for (var i =0; i<cartResponse.length; i++){
+                total += cartResponse[i].crop_price * cartResponse[i].crop_quantity ;
+            }
+            res.send(`total price: ${total}`);
+        }
+        else{
+            res.send('cart is empty');
+        }
+    }
+    catch (err) {
+        res.send(err);
+    }
+}
+
 // Create an cart for a user
 addCart = async (req, res) => {
     const newCart = {
         "crop_name": req.body.crop_name,
-        "user_id": req.body.user_id,
+        "dealer_id": req.body.dealer_id,
         "crop_quantity": req.body.crop_quantity,
         "crop_price": req.body.crop_price,
     }
@@ -72,7 +92,7 @@ removeCart = async (req, res) => {
 
 // Delete all items from cart for a user
 removeCarts = async (req, res) => {
-    Cart.findOneAndDelete({ user_id: req.query.uid })
+    Cart.findOneAndDelete({ dealer_id: req.query.uid })
         .then((result) => {
             if (result) {
                 res.send(result)
@@ -87,6 +107,7 @@ removeCarts = async (req, res) => {
 
 module.exports = {
     viewCart,
+    viewBill,
     addCart,
     updateCart,
     removeCart,

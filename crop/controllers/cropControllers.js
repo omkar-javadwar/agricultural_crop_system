@@ -23,23 +23,53 @@ viewCrops = async (req, res) => {
  */
 
 viewCrop = async (req, res) => {
-
     if (!req.query.cid && req.query.uid) {
-        Crop.find({ user_id: req.query.uid }).then(result => {
+        Crop.find({ farmer_id: req.query.uid }).then(result => {
             if (result) {
                 res.send(`all crop details =>
                 ${result}`);
             } else {
-                res.status(400).send(err.message);
+                res.status(400).send('crop details not available');
             }
         })
     } else if (req.query.cid && req.query.uid) {
-        Crop.find({ _id: req.query.cid, user_id: req.query.uid }).then((result) => {
+        Crop.find({ _id: req.query.cid, farmer_id: req.query.uid }).then((result) => {
             if (result) {
                 res.send(`crop details =>
                 ${result}`);
             } else {
-                res.status(400).send(err.message);
+                res.status(400).send('crop details not available');
+            }
+        })
+    }
+}
+
+// search crop by crop name and crop tag
+searchCrop = async (req, res) => {
+    if (!req.query.crop_name && req.query.crop_tag) {
+        Crop.find({ crop_tag: req.query.crop_tag }).then(result => {
+            if (result.length > 0) {
+                res.send(result);
+            } else {
+                res.status(400).send('crop details not available');
+            }
+        })
+    }
+    else if (req.query.crop_name && !req.query.crop_tag) {
+        Crop.find({ crop_name: req.query.crop_name }).then((result) => {
+            if (result.length > 0) {
+                res.send(result);
+            } else {
+                res.status(400).send('crop details not available');
+            }
+        })
+    }
+    else if (req.query.crop_name && req.query.crop_tag) {
+        Crop.find({ crop_tag: req.query.crop_tag, crop_name: req.query.crop_name }).then((result) => {
+            if (result.length > 0) {
+                res.send(result);
+            } else {
+                res.status(400).send('crop details not available');
             }
         })
     }
@@ -49,7 +79,7 @@ viewCrop = async (req, res) => {
 addCrop = async (req, res) => {
     const newCrop = {
         "crop_name": req.body.crop_name,
-        "user_id": req.body.user_id,
+        "farmer_id": req.body.farmer_id,
         "crop_tag": req.body.crop_tag,
         "crop_quantity": req.body.crop_quantity,
         "crop_price": req.body.crop_price,
@@ -88,9 +118,9 @@ removeCropById = async (req, res) => {
     Crop.findByIdAndDelete(req.params.cid)
         .then((result) => {
             // removed crop details => 
-            if(result){
+            if (result) {
                 res.send(result)
-            }else{
+            } else {
                 res.status(400).send('no crop is available to display')
             }
         }).catch((err) => {
@@ -100,11 +130,11 @@ removeCropById = async (req, res) => {
 
 // Delete all crops for a user
 removeCrops = async (req, res) => {
-    Crop.findOneAndDelete({ user_id: req.query.uid })
+    Crop.findOneAndDelete({ farmer_id: req.query.uid })
         .then((result) => {
-            if(result){
+            if (result) {
                 res.send(result)
-            }else{
+            } else {
                 res.status(400).send('no crops are available to display')
             }
         })
@@ -116,6 +146,7 @@ removeCrops = async (req, res) => {
 module.exports = {
     viewCrops,
     viewCrop,
+    searchCrop,
     addCrop,
     updateCrop,
     removeCropById,

@@ -30,8 +30,6 @@ router.get('/all', cropControllers.viewCrops);
  *       - in: query
  *         name: uid
  *         required: true
- *     schema:
- *       type: object
  *     responses:
  *       200:
  *         description: Returns the requested crop
@@ -39,6 +37,26 @@ router.get('/all', cropControllers.viewCrops);
 
 router.get('/', cropControllers.viewCrop);
 
+/**
+ * @swagger
+ * /crop/search:
+ *   get:
+ *     summary: Get crop details by crop_name and crop_tag
+ *     tags:
+ *       - Crop Management
+ *     parameters:
+ *       - in: query
+ *         name: crop_name
+ *       - in: query
+ *         name: crop_tag
+ *     responses:
+ *       200:
+ *         description: Returns the requested crop
+ */
+
+ router.get('/search', cropControllers.searchCrop);
+
+ 
 /**
  * @swagger
  * /crop:

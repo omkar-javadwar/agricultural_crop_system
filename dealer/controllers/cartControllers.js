@@ -2,16 +2,6 @@ const Dealer = require('../models/dealerSchema');
 const axios = require('axios');
 const mongoose = require('mongoose');
 
-// GET all crops for a Dealer
-viewCrops = async (req, res) => {
-    axios.get(`http://localhost:3001/crop/all`)
-        .then((result) => {
-            res.send(result.data)
-        }).catch((err) => {
-            res.status(400).send(err.message)
-        });
-};
-
 // GET all items for a Dealer's cart
 viewCart = async (req, res) => {
     axios.get(`http://localhost:3001/cart?uid=${req.params.uid}`)
@@ -27,7 +17,7 @@ addCrop = async (req, res) => {
     try {
         const cartResponse = await axios.post("http://localhost:3001/cart", {
             crop_name: req.body.crop_name,
-            user_id: mongoose.Types.ObjectId(req.params.uid),
+            dealer_id: mongoose.Types.ObjectId(req.params.uid),
             crop_quantity: req.body.crop_quantity,
             crop_price: req.body.crop_price
         })
@@ -85,9 +75,19 @@ removeCrop = async (req, res) => {
     }
 };
 
+// get bill
+viewBill = async (req, res) => {
+    axios.get(`http://localhost:3001/cart/bill/${req.params.uid}`)
+        .then((result) => {
+            res.send(result.data)
+        }).catch((err) => {
+            res.status(400).send(err.message)
+        });
+}
+
 module.exports = {
-    viewCrops,
     viewCart,
+    viewBill,
     addCrop,
     updateCart,
     removeCrop

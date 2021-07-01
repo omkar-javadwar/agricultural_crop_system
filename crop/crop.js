@@ -2,7 +2,6 @@ const express = require('express');
 const dbConnection = require('./models/cropDB');
 const cropRoutes = require('./routes/cropRoutes');
 const cartRoutes = require('./routes/cartRoutes');
-const cartBillRoutes = require('./routes/cartBillRoutes');
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
@@ -18,7 +17,7 @@ crop.use(express.json());
 crop.use('/crop', cropRoutes);
 
 // route for cart
-crop.use('/cart', cartRoutes, cartBillRoutes);
+crop.use('/cart', cartRoutes);
 
 const options = {
     definition: {

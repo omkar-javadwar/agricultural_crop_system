@@ -2,6 +2,7 @@ const express = require('express');
 const dbConnection = require('./models/dealerDB');
 const dealerRoutes = require('./routes/dealerRoutes');
 const cartRoutes = require('./routes/cartRoutes');
+const cropRoutes = require('./routes/cropRoutes');
 const farmerRoutes = require('./routes/farmerRoutes');
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
@@ -16,7 +17,7 @@ dealer.use(express.urlencoded({ extended: false }));
 dealer.use(express.json());
 dealer.use(cookieParser());
 
-dealer.use('/dealer', dealerRoutes, cartRoutes, farmerRoutes);
+dealer.use('/dealer', dealerRoutes, cartRoutes, farmerRoutes, cropRoutes);
 
 const options = {
     definition: {

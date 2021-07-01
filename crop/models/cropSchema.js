@@ -6,9 +6,9 @@ const cropSchema = new mongoose.Schema({
         trim: true,
         required: [true, 'name is required']
     },
-    user_id: {
+    farmer_id: {
         type: mongoose.SchemaTypes.ObjectId,
-        required: [true, 'user id required']
+        required: [true, 'farmer id required']
     },
     crop_tag: {
         type: String,
