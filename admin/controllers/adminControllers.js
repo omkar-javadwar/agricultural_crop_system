@@ -2,17 +2,21 @@ const mongoose = require('mongoose');
 const Admin = require('../models/adminSchema');
 const bcrypt = require('bcryptjs');
 
-exports.viewAdmin = async (req, res) => {
+viewAdmin = async (req, res) => {
     Admin.findById(req.params.id)
         .then((data) => {
-            res.send(`Username is ${data.username} and Password is ${data.password}`);
+            if(data){
+                res.send(`Username is ${data.username} and Password is ${data.password}`);
+            }else{
+                res.status(400).send('no data available');
+            }
         })
         .catch((err) => {
             res.status(400).send(err.message);
         });
 };
 
-exports.registerAdmin = async (req, res) => {
+registerAdmin = async (req, res) => {
     const user = new Admin(req.body);
     const token = await user.generateAuthToken();
 
@@ -34,7 +38,7 @@ exports.registerAdmin = async (req, res) => {
     });
 };
 
-exports.loginAdmin = async (req, res) => {
+loginAdmin = async (req, res) => {
     try {
         const username = req.body.username;
         const password = req.body.password;
@@ -51,7 +55,7 @@ exports.loginAdmin = async (req, res) => {
         });
 
         if (isMatch) {
-            res.status(201).send('login successful');
+            res.send('login successful');
         } else {
             res.send('invalid password');
         }
@@ -60,7 +64,7 @@ exports.loginAdmin = async (req, res) => {
     }
 };
 
-exports.updateAdmin = async (req, res) => {
+updateAdmin = async (req, res) => {
     req.body.password = await bcrypt.hash(req.body.password, 10);
     Admin.findByIdAndUpdate(req.params.id, req.body.password)
         .then((data) => {
@@ -71,12 +75,24 @@ exports.updateAdmin = async (req, res) => {
         });
 };
 
-exports.removeAdmin = async (req, res) => {
+removeAdmin = async (req, res) => {
     Admin.findByIdAndDelete(req.params.id)
         .then((data) => {
-            res.send(`Username ${data.username} has lost the rights!`);
+            if(data){
+                res.send(`Username ${data.username} has lost the rights!`);
+            }else{
+                res.status(400).send('no data available');
+            }
         })
         .catch((err) => {
             res.status(400).send(err.message);
         });
 };
+
+module.exports = {
+    viewAdmin,
+    registerAdmin,
+    loginAdmin,
+    updateAdmin,
+    removeAdmin
+}

@@ -13,7 +13,6 @@ const adminSchema = new mongoose.Schema({
     password: {
         type: String,
         minlength: 5,
-        maxlength: 8,
         required: [true, 'password is required']
     }
 });

@@ -9,6 +9,8 @@ const router = express.Router();
  * /admin/{id}:
  *   get:
  *     summary: View admin
+ *     tags:
+ *       - Admin Profile
  *     parameters:
  *      - in: path
  *        name: id
@@ -26,6 +28,8 @@ router.get('/:id', authentication, adminControllers.viewAdmin);
  * /admin/signup:
  *   post:
  *     summary: Admin registration
+ *     tags:
+ *       - Admin Profile
  *     requestBody:
  *       required: true
  *       content:
@@ -35,10 +39,8 @@ router.get('/:id', authentication, adminControllers.viewAdmin);
  *             properties:
  *               username:
  *                 type: string
- *                 description: username
  *               password:
  *                 type: string
- *                 description: password                         
  *     responses:
  *       200:
  *         description: Returns the requested admin
@@ -51,6 +53,8 @@ router.post('/signup', adminControllers.registerAdmin);
 * /admin/signin:
 *   post:
 *     summary: Admin login
+*     tags:
+*       - Admin Profile
 *     requestBody:
 *       required: true
 *       content:
@@ -60,10 +64,8 @@ router.post('/signup', adminControllers.registerAdmin);
 *             properties:
 *               username:
 *                 type: string
-*                 description: username
 *               password:
 *                 type: string
-*                 description: password                         
 *     responses:
 *       200:
 *         description: Returns the requested admin
@@ -76,6 +78,8 @@ router.post('/signin', adminControllers.loginAdmin);
  * /admin/{id}:
  *      put:
  *          summary: Update admin password.
+ *          tags:
+ *              - Admin Profile 
  *          parameters:
  *            - in: path
  *              name: id
@@ -89,10 +93,8 @@ router.post('/signin', adminControllers.loginAdmin);
  *                          properties:
  *                            username:
  *                              type: string
- *                              description: username
  *                            password:
  *                              type: string
- *                              description: password              
  *          responses:
  *              '200':
  *                  description: Returns the requested admin
@@ -105,6 +107,8 @@ router.put('/:id', authentication, adminControllers.updateAdmin);
  * /admin/{id}:
  *   delete:
  *     summary: Delete admin
+ *     tags:
+ *       - Admin Profile
  *     parameters:
  *      - in: path
  *        name: id

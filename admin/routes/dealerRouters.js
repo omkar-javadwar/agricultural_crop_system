@@ -1,79 +1,180 @@
 const express = require('express');
-const axios = require('axios');
 const authentication = require('../../middleware/authentication');
+const dealerControllers = require('../controllers/dealerController');
 
-const admin = express.Router();
-
-admin.use(express.json());
+const router = express.Router();
 
 /**
  * @swagger
  * /dealer:
  *   get:
+ *     summary: View all dealers
+ *     tags:
+ *       - Dealer Management
  *     responses:
  *       200:
- *         description: Returns all the dealers
+ *         description: Requested by admin
  */
 
-//Get dealer
-admin.get('/', authentication, (req, res) => {
-    axios.get('http://localhost:4000/dealer').then((response) => {
-        res.send(response.data)
-    }).catch((error) => {
-        console.log(error);
-    })
-})
+router.get('/', authentication, dealerControllers.viewDealers);
 
 /**
  * @swagger
  * /dealer/{id}:
  *   get:
+ *     summary: View dealer by id
+ *     tags:
+ *       - Dealer Management
  *     parameters:
  *      - in: path
  *        name: id
- *        type: string
+ *        required: true
  *     responses:
  *       200:
- *         description: Returns the requested dealer
+ *         description: Requested by admin
  */
 
-//Get dealer by id
-admin.get('/:id', authentication, (req, res) => {
-    const id = req.params.id;
-    axios.get('http://localhost:4000/dealer/' + id).then((response) => {
-        res.send(response.data)
-    }).catch((error) => {
-        console.log(error);
-    })
-})
+router.get('/:id', authentication, dealerControllers.viewDealer);
 
-//Post dealer
-admin.post('/', authentication, (req, res) => {
-    axios.post('http://localhost:4000/dealer/signup', req.body).then((response) => {
-        res.send(response.data);
-    }).catch((error) => {
-        console.log(error);
-    })
-})
+/**
+ * @swagger
+ * /dealer/signup:
+ *   post:
+ *     summary: Dealer signup
+ *     tags:
+ *       - Dealer Management
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               contact:
+ *                 type: string
+ *               address:
+ *                 type: object
+ *                 properties:
+ *                   street:
+ *                     type: string
+ *                   city:
+ *                     type: string
+ *                   state:
+ *                     type: string
+ *                   zip:
+ *                     type: number
+ *     responses:
+ *       200:
+ *         description: Returns the requested admin
+ */
 
-//Put dealer
-admin.put('/:id', authentication, (req, res) => {
-    const id = req.params.id;
-    axios.patch('http://localhost:4000/dealer/' + id, req.body).then((response) => {
-        res.send(response.data);
-    }).catch((error) => {
-        console.log(error);
-    })
-})
+router.post('/signup', authentication, dealerControllers.registerDealer);
 
-//Delete dealer
-admin.delete('/:id', authentication, (req, res) => {
-    const id = req.params.id;
-    axios.patch('http://localhost:4000/dealer/' + id, req.body).then((response) => {
-        res.send(response.data);
-    }).catch((error) => {
-        console.log(error);
-    })
-})
+/**
+ * @swagger
+ * /dealer/signin:
+ *   post:
+ *     summary: Dealer login
+ *     tags:
+ *       - Dealer Management
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Returns the requested admin
+ */
 
-module.exports = admin;
+router.post('/signin', authentication, dealerControllers.loginDealer);
+
+/**
+ * @swagger
+ * /dealer/{id}:
+ *   put:
+ *     summary: Update dealer details
+ *     tags:
+ *       - Dealer Management
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               contact:
+ *                 type: string
+ *               address:
+ *                 type: object
+ *                 properties:
+ *                   street:
+ *                     type: string
+ *                   city:
+ *                     type: string
+ *                   state:
+ *                     type: string
+ *                   zip:
+ *                     type: number
+ *     responses:
+ *       200:
+ *         description: Returns the requested admin
+ */
+
+router.put('/:id', authentication, dealerControllers.updateDealer);
+
+/**
+ * @swagger
+ * /dealer/{id}:
+ *   delete:
+ *     summary: Remove dealer by id
+ *     tags:
+ *       - Dealer Management
+ *     parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *     responses:
+ *       200:
+ *         description: Requested by admin
+ */
+
+router.delete('/:id', authentication, dealerControllers.removeDealer);
+
+/**
+ * @swagger
+ * /dealer:
+ *   delete:
+ *     summary: Remove all dealers
+ *     tags:
+ *       - Dealer Management
+ *     responses:
+ *       200:
+ *         description: Requested by admin
+ */
+
+ router.delete('/', authentication, dealerControllers.removeDealers);
+
+module.exports = router;
