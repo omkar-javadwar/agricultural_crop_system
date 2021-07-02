@@ -4,6 +4,7 @@ const cropRoutes = require('./routes/cropRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+var cors = require('cors');
 
 // Express app
 const crop = express();
@@ -12,6 +13,7 @@ const port = process.env.PORT || 3001;
 // middleware 
 crop.use(express.urlencoded({ extended: false }));
 crop.use(express.json());
+crop.use(cors());
 
 // route for crop
 crop.use('/crop', cropRoutes);

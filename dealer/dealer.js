@@ -7,6 +7,7 @@ const farmerRoutes = require('./routes/farmerRoutes');
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const cookieParser = require('cookie-parser');
+var cors = require('cors');
 
 // Express app
 const dealer = express();
@@ -16,6 +17,7 @@ const port = process.env.PORT || 4000;
 dealer.use(express.urlencoded({ extended: false }));
 dealer.use(express.json());
 dealer.use(cookieParser());
+dealer.use(cors());
 
 dealer.use('/dealer', dealerRoutes, cartRoutes, farmerRoutes, cropRoutes);
 

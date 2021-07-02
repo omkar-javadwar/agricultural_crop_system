@@ -118,6 +118,33 @@ router.delete("/:cid/cart", authentication, cartControllers.removeCrop);
  *         description: Returns the requested dealer
  */
 
- router.get("/:uid/cart/bill", authentication, cartControllers.viewBill);
+router.get("/:uid/cart/bill", authentication, cartControllers.viewBill);
+
+/**
+ * @swagger
+ * /dealer/{uid}/cart/bill:
+ *   post:
+ *     summary: Create payment by dealer_id
+ *     tags:
+ *       - Cart Management
+ *     parameters:
+ *      - in: path
+ *        name: uid
+ *        required: true
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               price:
+ *                 type: number
+ *     responses:
+ *       200:
+ *         description: Returns the requested dealer
+ */
+
+router.post("/:uid/cart/bill", authentication, cartControllers.payBill);
 
 module.exports = router;

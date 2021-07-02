@@ -4,7 +4,7 @@ const authentication = require('../../middleware/authentication');
 
 const router = express.Router();
 
-router.get('/', farmerControllers.viewFarmers);
+router.get('/', authentication, farmerControllers.viewFarmers);
 
 /**
  * @swagger
@@ -23,7 +23,7 @@ router.get('/', farmerControllers.viewFarmers);
  *         description: Returns the requested farmer
  */
 
-router.get('/:id', farmerControllers.viewFarmer);
+router.get('/:id', authentication, farmerControllers.viewFarmer);
 
 /**
  * @swagger
@@ -151,7 +151,7 @@ router.post('/signin', farmerControllers.loginFarmer);
  *         description: Returns the requested farmer
  */
 
-router.put('/:id', farmerControllers.updateFarmer);
+router.put('/:id', authentication, farmerControllers.updateFarmer);
 
 /**
  * @swagger
@@ -170,8 +170,8 @@ router.put('/:id', farmerControllers.updateFarmer);
  *         description: Returns the requested farmer
  */
 
- router.delete('/:id', farmerControllers.removeFarmer);
+ router.delete('/:id', authentication, farmerControllers.removeFarmer);
 
- router.delete('/', farmerControllers.removeFarmers);
+ router.delete('/', authentication, farmerControllers.removeFarmers);
 
 module.exports = router;

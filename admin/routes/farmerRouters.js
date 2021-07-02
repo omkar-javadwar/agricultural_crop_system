@@ -16,7 +16,7 @@ const router = express.Router();
  *         description: Requested by admin
  */
 
-router.get('/', farmerControllers.viewFarmers);
+router.get('/', authentication, farmerControllers.viewFarmers);
 
 /**
  * @swagger
@@ -35,7 +35,7 @@ router.get('/', farmerControllers.viewFarmers);
  *         description: Requested by admin
  */
 
-router.get('/:id', farmerControllers.viewFarmer);
+router.get('/:id', authentication, farmerControllers.viewFarmer);
 
 /**
  * @swagger
@@ -92,7 +92,7 @@ router.get('/:id', farmerControllers.viewFarmer);
  *         description: Requested by admin
  */
 
-router.post('/signup', farmerControllers.registerFarmer);
+router.post('/signup', authentication, farmerControllers.registerFarmer);
 
 /**
  * @swagger
@@ -117,7 +117,7 @@ router.post('/signup', farmerControllers.registerFarmer);
  *         description: Requested by admin
  */
 
-router.post('/signin', farmerControllers.loginFarmer);
+router.post('/signin', authentication, farmerControllers.loginFarmer);
 
 /**
  * @swagger
@@ -163,7 +163,7 @@ router.post('/signin', farmerControllers.loginFarmer);
  *         description: Requested by admin
  */
 
-router.put('/:id', farmerControllers.updateFarmer);
+router.put('/:id', authentication, farmerControllers.updateFarmer);
 
 /**
  * @swagger
@@ -182,7 +182,7 @@ router.put('/:id', farmerControllers.updateFarmer);
  *         description: Requested by admin
  */
 
-router.delete('/:id', farmerControllers.removeFarmer);
+router.delete('/:id', authentication, farmerControllers.removeFarmer);
 
 /**
 * @swagger
@@ -196,6 +196,6 @@ router.delete('/:id', farmerControllers.removeFarmer);
 *         description: Requested by admin
 */
 
-router.delete('/', farmerControllers.removeFarmers);
+router.delete('/', authentication, farmerControllers.removeFarmers);
 
 module.exports = router;

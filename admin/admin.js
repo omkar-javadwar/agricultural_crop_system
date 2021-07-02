@@ -6,6 +6,7 @@ const dealerRouters = require('./routes/dealerRouters');
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const cookieParser = require('cookie-parser');
+var cors = require('cors');
 
 // Express app
 const admin = express();
@@ -15,6 +16,7 @@ const port = process.env.PORT || 3000;
 admin.use(express.urlencoded({ extended: false }));
 admin.use(express.json());
 admin.use(cookieParser());
+admin.use(cors());
 
 admin.get('/home', (req, res) =>{res.send('welcome to admin')});
 

@@ -4,7 +4,7 @@ const authentication = require('../../middleware/authentication');
 
 const router = express.Router();
 
-router.get('/', dealerControllers.viewDealers);
+router.get('/', authentication, dealerControllers.viewDealers);
 
 /**
  * @swagger
@@ -22,7 +22,7 @@ router.get('/', dealerControllers.viewDealers);
  *         description: Returns the requested Dealer
  */
 
-router.get('/:id', dealerControllers.viewDealer);
+router.get('/:id', authentication, dealerControllers.viewDealer);
 
 /**
  * @swagger
@@ -131,7 +131,7 @@ router.post('/signin', dealerControllers.loginDealer);
  *         description: Returns the requested dealer
  */
 
-router.put('/:id', dealerControllers.updateDealer);
+router.put('/:id', authentication, dealerControllers.updateDealer);
 
 /**
  * @swagger
@@ -149,8 +149,8 @@ router.put('/:id', dealerControllers.updateDealer);
  *         description: Returns the requested dealer
  */
 
-router.delete('/:id', dealerControllers.removeDealer);
+router.delete('/:id', authentication, dealerControllers.removeDealer);
 
-router.delete('/', dealerControllers.removeDealers);
+router.delete('/', authentication, dealerControllers.removeDealers);
 
 module.exports = router;

@@ -39,7 +39,7 @@ router.get('/', cartController.viewCart);
  *             properties:
  *               crop_name:
  *                 type: string
- *               user_id:
+ *               dealer_id:
  *                 type: string
  *               crop_quantity:
  *                 type: number

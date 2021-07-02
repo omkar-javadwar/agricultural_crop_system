@@ -85,10 +85,39 @@ viewBill = async (req, res) => {
         });
 }
 
+payBill = async (req, res) => {
+    try {
+        const dealerResponse = await Dealer.findById(req.params.uid);
+        if (dealerResponse) {
+
+            const dealer_details = {
+                name: dealerResponse.name,
+                email: dealerResponse.email,
+                address: dealerResponse.address,
+                price: req.body.price
+            }
+
+            axios.post(`http://localhost:7000/payment/${req.params.uid}`, dealer_details)
+                .then((result) => {
+                    res.send(result.data)
+                }).catch((err) => {
+                    res.status(400).send(err.message)
+                });
+        }
+        else {
+            res.send('invalid dealer_id')
+        }
+    }
+    catch (err) {
+        res.status(400).send(err)
+    }
+}
+
 module.exports = {
     viewCart,
     viewBill,
     addCrop,
     updateCart,
-    removeCrop
+    removeCrop,
+    payBill
 }

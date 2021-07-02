@@ -54,9 +54,8 @@ router.get('/', cropControllers.viewCrop);
  *         description: Returns the requested crop
  */
 
- router.get('/search', cropControllers.searchCrop);
+router.get('/search', cropControllers.searchCrop);
 
- 
 /**
  * @swagger
  * /crop:
@@ -73,7 +72,7 @@ router.get('/', cropControllers.viewCrop);
  *             properties:
  *               crop_name:
  *                 type: string
- *               user_id:
+ *               farmer_id:
  *                 type: string
  *               crop_tag:
  *                 type: string

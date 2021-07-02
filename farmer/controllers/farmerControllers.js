@@ -78,9 +78,9 @@ loginFarmer = async (req, res) => {
         });
 
         if (isMatch) {
-            res.status(201).send('login successful');
+            res.status(200).send('login successful');
         } else {
-            res.send('invalid password');
+            res.status(400).send('invalid password');
         }
     } catch (err) {
         res.status(400).send('invalid user');
